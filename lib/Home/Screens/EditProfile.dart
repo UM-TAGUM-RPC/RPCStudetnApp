@@ -3,8 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
 
-final formKey = GlobalKey<FormState>();
-
 final password = AutoDisposeStateProvider((ref) => true);
 final confirmpassword = AutoDisposeStateProvider((ref) => false);
 
@@ -15,6 +13,7 @@ class EditProfile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final obs1 = ref.watch(password);
     final obs = ref.watch(confirmpassword);
+    final formKey = GlobalKey<FormState>();
 
     return SingleChildScrollView(
       child: Padding(

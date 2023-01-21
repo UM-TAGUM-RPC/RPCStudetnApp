@@ -15,13 +15,12 @@ import 'package:rpcstudentapp/Widgets/BottomBarIndicator.dart';
 final index = StateProvider<int>((ref) => 0);
 
 class Home extends ConsumerWidget {
-  const Home(this.child, {super.key});
-  final Widget child;
+  const Home({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
+  
     return Scaffold(
         key: scaffoldKey,
         drawer: Drawer(
@@ -226,35 +225,32 @@ class Home extends ConsumerWidget {
                 ],
               ),
             )),
-        bottomNavigationBar: Container(
-          constraints: const BoxConstraints(maxHeight: double.infinity),
-          child: BottomIndicatorBar(
-            onTap: (int i) {
-              ref.read(index.notifier).state = i;
-            },
-            currentIndex: 0,
-            shadow: false,
-            activeColor: CtrlColors.red,
-            inactiveColor: const Color(0xFF404042),
-            indicatorColor: CtrlColors.red,
-            items: [
-              BottomIndicatorNavigationBarItem(
-                icon: CtrlSvg.home,
-                count: 0,
-                showBadge: false,
-              ),
-              BottomIndicatorNavigationBarItem(
-                icon: CtrlSvg.signupgrey,
-                count: 0,
-                showBadge: false,
-              ),
-              BottomIndicatorNavigationBarItem(
-                icon: CtrlSvg.notif,
-                count: 0,
-                showBadge: false,
-              ),
-            ],
-          ),
+        bottomNavigationBar: BottomIndicatorBar(
+          onTap: (int i) {
+            ref.read(index.notifier).state = i;
+            print(ref.watch(index.notifier).state);
+          },
+          shadow: false,
+          activeColor: CtrlColors.red,
+          inactiveColor: const Color(0xFF404042),
+          indicatorColor: CtrlColors.red,
+          items: [
+            BottomIndicatorNavigationBarItem(
+              icon: CtrlSvg.home,
+              count: 0,
+              showBadge: false,
+            ),
+            BottomIndicatorNavigationBarItem(
+              icon: CtrlSvg.signupgrey,
+              count: 0,
+              showBadge: false,
+            ),
+            BottomIndicatorNavigationBarItem(
+              icon: CtrlSvg.notif,
+              count: 0,
+              showBadge: false,
+            ),
+          ],
         ),
         body: SingleChildScrollView(
           child: Stack(
@@ -508,24 +504,24 @@ class Home extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.only(
-                    //     right: 30,
-                    //   ),
-                    //   child: Container(
-                    //       padding: const EdgeInsets.all(12),
-                    //       height: MediaQuery.of(context).size.height / 1.4,
-                    //       width: double.infinity,
-                    //       child: IndexedStack(
-                    //         index: ref.read(index.notifier).state,
-                    //         // ignore: prefer_const_literals_to_create_immutables
-                    //         children: [
-                    //           const HomePage(),
-                    //           const EditProfile(),
-                    //           const NotifScreen(),
-                    //         ],
-                    //       )),
-                    // ),
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        right: 30,
+                      ),
+                      child: Container(
+                          padding: const EdgeInsets.all(12),
+                          height: MediaQuery.of(context).size.height / 1.4,
+                          width: double.infinity,
+                          child: IndexedStack(
+                            index: ref.watch(index.notifier).state,
+                            // ignore: prefer_const_literals_to_create_immutables
+                            children: [
+                              const HomePage(),
+                              const EditProfile(),
+                              const NotifScreen(),
+                            ],
+                          )),
+                    ),
                   ],
                 ),
               ),

@@ -15,12 +15,10 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
-    final router = ref.watch(AppRoutes().route);
+    // final router = ref.watch(AppRoutes().route);
 
     return MaterialApp.router(
-      routeInformationParser: router.routeInformationParser,
-      routeInformationProvider: router.routeInformationProvider,
-      routerDelegate: router.routerDelegate,
+      routerConfig: AppRoutes().route,
       debugShowCheckedModeBanner: false,
     );
   }

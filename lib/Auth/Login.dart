@@ -231,7 +231,7 @@ class Login extends ConsumerWidget {
                                       backgroundColor: Color(0xFFEC4969),
                                     ),
                                     onPressed: () {
-                                      context.goNamed('/home');
+                                      context.go('/home');
                                     },
                                     child: Center(
                                       child: Text(
@@ -273,7 +273,7 @@ class Login extends ConsumerWidget {
                                   ),
                                 ),
                                 onTap: () {
-                                  GoRouter.of(context).go("/signup");
+                                  GoRouter.of(context).go("/");
                                 },
                               )
                             ],

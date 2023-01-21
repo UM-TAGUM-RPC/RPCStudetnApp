@@ -509,7 +509,9 @@ class Signup extends ConsumerWidget {
                                             BorderRadius.circular(25)),
                                     backgroundColor: const Color(0xFFEC4969),
                                   ),
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    context.go('/login');
+                                  },
                                   child: const Center(
                                     child: Text(
                                       'Sign Up',

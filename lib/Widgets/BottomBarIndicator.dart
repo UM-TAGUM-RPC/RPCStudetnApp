@@ -164,7 +164,7 @@ class _BottomIndicatorBarState extends State<BottomIndicatorBar> {
   Widget _buildItemWidget(
       BottomIndicatorNavigationBarItem item, bool isSelected) {
     return Container(
-      color: Colors.white,
+      // color: Colors.white,
       height: barHeight,
       width: width / items.length,
       child: Column(
