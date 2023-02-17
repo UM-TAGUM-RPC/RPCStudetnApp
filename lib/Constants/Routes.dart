@@ -9,6 +9,7 @@ import 'package:rpcstudentapp/Home/Screens/History.dart';
 import 'package:rpcstudentapp/Home/Screens/Homepage.dart';
 import 'package:rpcstudentapp/Home/Screens/Notifications.dart';
 import 'package:rpcstudentapp/Home/Screens/Profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StringRoutes {
   static const String login = 'login';
@@ -23,11 +24,18 @@ class StringRoutes {
 
 final GlobalKey<NavigatorState> rootNavigator = GlobalKey(debugLabel: 'root');
 final GlobalKey<NavigatorState> shellNavigator = GlobalKey(debugLabel: 'shell');
+String? supabaseid;
+
+getuser() async {
+  final prefs = await SharedPreferences.getInstance();
+  supabaseid = prefs.getString("supabase_id");
+}
 
 final routerKey = Provider<GoRouter>((ref) {
+  getuser();
   return GoRouter(
     navigatorKey: rootNavigator,
-    initialLocation: '/login',
+    initialLocation: supabaseid == '' ? '/login' : '/homepage',
     redirect: (context, state) {
       return null;
     },
@@ -48,9 +56,29 @@ final routerKey = Provider<GoRouter>((ref) {
           );
         },
       ),
+
+      GoRoute(
+        name: StringRoutes.profile,
+        path: '/profile',
+        builder: (BuildContext context, GoRouterState state) {
+          return Profile(
+            key: state.pageKey,
+          );
+        },
+      ),
+      GoRoute(
+        name: StringRoutes.history,
+        path: '/history',
+        builder: (BuildContext context, GoRouterState state) {
+          return History(key: state.pageKey);
+        },
+      ),
+
       ShellRoute(
         navigatorKey: shellNavigator,
-        builder: (context, state, child) => Home(child),
+        builder: (context, state, child) {
+          return Home(child);
+        },
         routes: [
           GoRoute(
             name: StringRoutes.homepage,
@@ -81,22 +109,22 @@ final routerKey = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      GoRoute(
-        name: StringRoutes.profile,
-        path: '/profile',
-        builder: (BuildContext context, GoRouterState state) {
-          return Profile(
-            key: state.pageKey,
-          );
-        },
-      ),
-      GoRoute(
-        name: StringRoutes.history,
-        path: '/history',
-        builder: (BuildContext context, GoRouterState state) {
-          return History(key: state.pageKey);
-        },
-      )
+      // GoRoute(
+      //   name: StringRoutes.profile,
+      //   path: '/profile',
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return Profile(
+      //       key: state.pageKey,
+      //     );
+      //   },
+      // ),
+      // GoRoute(
+      //   name: StringRoutes.history,
+      //   path: '/history',
+      //   builder: (BuildContext context, GoRouterState state) {
+      //     return History(key: state.pageKey);
+      //   },
+      // )
     ],
   );
 });

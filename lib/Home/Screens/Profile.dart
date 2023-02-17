@@ -1,212 +1,251 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
+import 'package:rpcstudentapp/Controller/profile.dart';
 
-class Profile extends ConsumerWidget {
+class Profile extends ConsumerStatefulWidget {
   const Profile({super.key});
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return SingleChildScrollView(
-      child: Padding(
-          padding: const EdgeInsets.only(top: 15, left: 10, right: 30),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                // ignore: prefer_const_literals_to_create_immutables
-                children: [
-                  const Text(
-                    'ID: ',
-                    style: TextStyle(
-                        fontFamily: 'GeneralSansRegular',
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProfileState();
+}
+
+class _ProfileState extends ConsumerState<Profile> {
+  @override
+  void initState() {
+    ref.read(profilecontroller.notifier).getID();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = ref.watch(profilecontroller);
+    return StreamBuilder<dynamic>(
+        stream: controller.supabase.from("users").stream(primaryKey: ['id']).eq("supabase_id", controller.userID),
+        builder: (context, snapshot) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              automaticallyImplyLeading: false,
+              elevation: 0.0,
+              title: Padding(
+                padding: const EdgeInsets.only(left: 5, top: 10),
+                child: Row(
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          context.go("/homepage");
+                        },
+                        icon: SvgPicture.asset(CtrlSvg.back)),
+                    const Text(
+                      "Back",
+                      style: TextStyle(
                         color: CtrlColors.black,
-                        fontSize: 15),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  const Text(
-                    '1234543',
-                    style: TextStyle(
-                        fontFamily: 'GeneralSans',
-                        color: CtrlColors.red,
-                        fontSize: 15),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-             Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        const Text(
-                          'D',
-                          style: TextStyle(
-                              fontFamily: 'GeneralSans',
-                              color: CtrlColors.red,
-                              fontSize: 40),
-                        ),
-                        const Text(
-                          'ignadice,',
-                          style: TextStyle(
-                              fontFamily: 'GeneralSans',
-                              color: CtrlColors.black,
-                              fontSize: 40),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      // ignore: prefer_const_literals_to_create_immutables
-                      children: [
-                        const Text(
-                          'Jayce',
-                          style: TextStyle(
-                              fontFamily: 'GeneralSans',
-                              color: CtrlColors.black,
-                              fontSize: 40),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Text(
-                          'Mico',
-                          style: TextStyle(
-                              fontFamily: 'GeneralSans',
-                              color: CtrlColors.black,
-                              fontSize: 40),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              const SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(right: 130, top: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  // ignore: prefer_const_literals_to_create_immutables
-                  children: [
-                    const Text(
-                      'Email: ',
-                      style: TextStyle(
-                          fontFamily: 'GeneralSansRegular',
-                          color: CtrlColors.black,
-                          fontSize: 13),
-                    ),
-                    const Text(
-                      'jaycemico@gmail.com',
-                      style: TextStyle(
-                          fontFamily: 'GeneralSans',
-                          color: CtrlColors.red,
-                          fontSize: 13),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Text(
-                      'Mobile Number: ',
-                      style: TextStyle(
-                          fontFamily: 'GeneralSansRegular',
-                          color: CtrlColors.black,
-                          fontSize: 13),
-                    ),
-                    const Text(
-                      '09309094441',
-                      style: TextStyle(
-                          fontFamily: 'GeneralSans',
-                          color: CtrlColors.red,
-                          fontSize: 13),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Text(
-                      'Birthday: ',
-                      style: TextStyle(
-                          fontFamily: 'GeneralSansRegular',
-                          color: CtrlColors.black,
-                          fontSize: 13),
-                    ),
-                    const Text(
-                      'July 20, 1997',
-                      style: TextStyle(
-                          fontFamily: 'GeneralSans',
-                          color: CtrlColors.red,
-                          fontSize: 13),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Text(
-                      'Advisor: ',
-                      style: TextStyle(
-                          fontFamily: 'GeneralSansRegular',
-                          color: CtrlColors.black,
-                          fontSize: 13),
-                    ),
-                    const Text(
-                      'Jayce Mico Dignadice',
-                      style: TextStyle(
-                          fontFamily: 'GeneralSans',
-                          color: CtrlColors.red,
-                          fontSize: 13),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const Text(
-                      'THESIS CODE: ',
-                      style: TextStyle(
-                          fontFamily: 'GeneralSansRegular',
-                          color: CtrlColors.black,
-                          fontSize: 13),
-                    ),
-                    const Text(
-                      '123456634',
-                      style: TextStyle(
-                          fontFamily: 'GeneralSans',
-                          color: CtrlColors.red,
-                          fontSize: 13),
-                    ),
-                    const SizedBox(
-                      height: 40,
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          SvgPicture.asset(CtrlSvg.logout),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            'LOG OUT',
-                            style: TextStyle(
-                                fontFamily: 'GeneralSansRegular',
-                                color: CtrlColors.black,
-                                fontSize: 15),
-                          ),
-                        ],
+                        fontFamily: "GeneralSans",
+                        fontSize: 14,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
+            ),
+            body: Padding(
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
+              child: SingleChildScrollView(
+                child: Padding(
+                    padding:
+                        const EdgeInsets.only(top: 15, left: 10, right: 20),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          // ignore: prefer_const_literals_to_create_immutables
+                          children: [
+                            Text(
+                              'ID: ',
+                              style: TextStyle(
+                                  fontFamily: 'GeneralSansRegular',
+                                  color: CtrlColors.black,
+                                  fontSize: 15.sp),
+                            ),
+                            10.horizontalSpace,
+                            Text(
+                              snapshot.hasData == true
+                                  ? snapshot.data[0]['idNumber']
+                                  : "",
+                              style: TextStyle(
+                                  fontFamily: 'GeneralSans',
+                                  color: CtrlColors.red,
+                                  fontSize: 15.sp),
+                            ),
+                          ],
+                        ),
+                        10.verticalSpace,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              // ignore: prefer_const_literals_to_create_immutables
+                              children: [
+                                Text(
+                                  snapshot.hasData == true
+                                      ? snapshot.data[0]['lastName']
+                                          .split("")[0]
+                                      : "",
+                                  style: TextStyle(
+                                      fontFamily: 'GeneralSans',
+                                      color: CtrlColors.red,
+                                      fontSize: 40.sp),
+                                ),
+                                Text(
+                                  snapshot.hasData == true
+                                      ? snapshot.data[0]['lastName']
+                                          .substring(1)
+                                      : "",
+                                  style: TextStyle(
+                                      fontFamily: 'GeneralSans',
+                                      color: CtrlColors.black,
+                                      fontSize: 40.sp),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              // ignore: prefer_const_literals_to_create_immutables
+                              children: [
+                                Text(
+                                  snapshot.hasData == true
+                                      ? snapshot.data[0]['firstName']
+                                      : "",
+                                  style: TextStyle(
+                                      fontFamily: 'GeneralSans',
+                                      color: CtrlColors.black,
+                                      fontSize: 40.sp),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        10.verticalSpace,
+                        Padding(
+                          padding: const EdgeInsets.only(right: 130, top: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            // ignore: prefer_const_literals_to_create_immutables
+                            children: [
+                              Text(
+                                "Email",
+                                style: TextStyle(
+                                    fontFamily: 'GeneralSansRegular',
+                                    color: CtrlColors.black,
+                                    fontSize: 13.sp),
+                              ),
+                              Text(
+                                snapshot.hasData == true
+                                    ? snapshot.data[0]['email']
+                                    : "",
+                                style: TextStyle(
+                                    fontFamily: 'GeneralSans',
+                                    color: CtrlColors.red,
+                                    fontSize: 13.sp),
+                              ),
+                              20.verticalSpace,
+                              Text(
+                                'Mobile Number: ',
+                                style: TextStyle(
+                                    fontFamily: 'GeneralSansRegular',
+                                    color: CtrlColors.black,
+                                    fontSize: 13.sp),
+                              ),
+                              Text(
+                                snapshot.hasData == true
+                                    ? snapshot.data[0]['mobileNumber']
+                                    : "",
+                                style: TextStyle(
+                                    fontFamily: 'GeneralSans',
+                                    color: CtrlColors.red,
+                                    fontSize: 13.sp),
+                              ),
+                              20.verticalSpace,
+                              Text(
+                                'Birthday: ',
+                                style: TextStyle(
+                                    fontFamily: 'GeneralSansRegular',
+                                    color: CtrlColors.black,
+                                    fontSize: 13.sp),
+                              ),
+                              Text(
+                                snapshot.hasData == true
+                                    ? snapshot.data[0]['birth']
+                                    : "",
+                                style: TextStyle(
+                                    fontFamily: 'GeneralSans',
+                                    color: CtrlColors.red,
+                                    fontSize: 13.sp),
+                              ),
+                              20.verticalSpace,
+                              Text(
+                                'Advisor: ',
+                                style: TextStyle(
+                                    fontFamily: 'GeneralSansRegular',
+                                    color: CtrlColors.black,
+                                    fontSize: 13.sp),
+                              ),
+                              Text(
+                                'Jayce Mico Dignadice',
+                                style: TextStyle(
+                                    fontFamily: 'GeneralSans',
+                                    color: CtrlColors.red,
+                                    fontSize: 13.sp),
+                              ),
+                              20.verticalSpace,
+                              Text(
+                                'THESIS CODE: ',
+                                style: TextStyle(
+                                    fontFamily: 'GeneralSansRegular',
+                                    color: CtrlColors.black,
+                                    fontSize: 13.sp),
+                              ),
+                              Text(
+                                '123456634',
+                                style: TextStyle(
+                                    fontFamily: 'GeneralSans',
+                                    color: CtrlColors.red,
+                                    fontSize: 13.sp),
+                              ),
+                              40.verticalSpace,
+                              InkWell(
+                                onTap: () {
+                                  context.go("/login");
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SvgPicture.asset(CtrlSvg.logout),
+                                    10.horizontalSpace,
+                                    const Text(
+                                      'LOG OUT',
+                                      style: TextStyle(
+                                          fontFamily: 'GeneralSansRegular',
+                                          color: CtrlColors.black,
+                                          fontSize: 15),
+                                    ),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        10.verticalSpace
+                      ],
+                    )),
               ),
-            ],
-          )),
-    );
+            ),
+          );
+        });
   }
 }

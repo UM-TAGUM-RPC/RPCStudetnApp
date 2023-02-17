@@ -27,4 +27,9 @@ class CtrlSvg {
   static const String signupgrey = "lib/assets/signupgrey.svg";
   static const String addCode = "lib/assets/addCode.svg";
   static const String giftCode = "lib/assets/giftcode.svg";
+  static const String redPeople = "lib/assets/redPeople.svg";
+  static const String redNotif = "lib/assets/redNotif.svg";
+  static const String search = "lib/assets/search.svg";
+  static const String requestapproval = "lib/assets/requestapproval.svg";
+  static const String rpc1 = "lib/assets/rpc.png";
 }
