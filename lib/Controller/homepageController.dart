@@ -12,12 +12,22 @@ final homepagecontroller = ChangeNotifierProvider<HomePagePod>((ref) {
 });
 
 class HomePagePod extends ChangeNotifier {
+  final TextEditingController zcode = TextEditingController();
   String? userID;
+  int? id;
+  String? code;
   final supabase = Supabase.instance.client;
 
   getUser() async {
     final prefs = await SharedPreferences.getInstance();
     userID = prefs.getString("supabase_id");
+    id = prefs.getInt("id");
+    notifyListeners();
+  }
+
+  getCode() async {
+    final prefs = await SharedPreferences.getInstance();
+    code = prefs.getString("code");
     notifyListeners();
   }
 
@@ -34,5 +44,4 @@ class HomePagePod extends ChangeNotifier {
         });
     notifyListeners();
   }
-  
 }

@@ -1,8 +1,13 @@
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rpcstudentapp/Constants/Routes.dart';
+import 'package:rpcstudentapp/Controller/sharedPref.dart';
 import 'package:rpcstudentapp/Widgets/dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -23,6 +28,7 @@ class LoginPod extends ChangeNotifier {
     isfalse = true;
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
+    final res = await FirebaseMessaging.instance.getToken();
     showDialog(
         barrierDismissible: false,
         context: context,
@@ -50,12 +56,58 @@ class LoginPod extends ChangeNotifier {
       final loginresponse = await supabase.auth
           .signInWithPassword(email: email.text, password: password.text)
           .whenComplete(() {
-        if (!isfalse) return;
-        Navigator.pop(context);
+       
       });
+      prefs.setString("supabase_id", loginresponse.user!.id);
       if (loginresponse.user!.id != "") {
-        prefs.setString("supabase_id", loginresponse.user!.id);
-        GoRouter.of(context).goNamed(StringRoutes.homepage);
+        final userID = await supabase
+            .from("users")
+            .select()
+            .eq("supabase_id", prefs.getString("supabase_id"))
+            .single();
+        if (userID != "") {
+          prefs.setInt("id", userID['id']);
+        }
+
+        final result = await supabase
+            .from("notification_token_device")
+            .select()
+            .eq("supabase_id", prefs.getString("supabase_id"));
+
+        if (result.isNotEmpty) {
+          if (result.first["token_device"] == res) {
+            if (!isfalse) return;
+            Navigator.pop(context);
+            GoRouter.of(context).goNamed(StringRoutes.homepage);
+            log("No Changes from notif token");
+          } else {
+            log("Update token");
+            await supabase
+                .from("notification_token_device")
+                .update({
+                  "token_device": res,
+                })
+                .eq("supabase_id", prefs.getString("supabase_id"))
+                .whenComplete(() {
+                  if (!isfalse) return;
+                  Navigator.pop(context);
+                  GoRouter.of(context).goNamed(StringRoutes.homepage);
+                });
+          }
+        } else {
+          log("Add user data");
+          try {
+            await supabase.from("notification_token_device").insert({
+              "supabase_id": prefs.getString("supabase_id"),
+              "user_id": prefs.getInt("id"),
+              "token_device": res,
+            }).whenComplete(() {
+              GoRouter.of(context).goNamed(StringRoutes.homepage);
+            });
+          } on PostgrestException catch (e) {
+            log(e.message, name: "From Notif");
+          }
+        }
       }
     } on AuthException {
       DialogPop.dialogup(

@@ -34,7 +34,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
 
     return StreamBuilder<dynamic>(
         stream: controller.supabase
-            .from("users")
+  .from("users")
             .stream(primaryKey: ['id']).eq("supabase_id", controller.userID),
         builder: (context, snapshot) {
           return Scaffold(
@@ -260,8 +260,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                             obscureText: obs1,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.auto,
+                                floatingLabelBehavior: FloatingLabelBehavior.auto,
                                 floatingLabelStyle:
                                     const TextStyle(color: CtrlColors.red),
                                 contentPadding:

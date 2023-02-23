@@ -10,6 +10,7 @@ import 'package:rpcstudentapp/Constants/Routes.dart';
 import 'package:rpcstudentapp/Controller/homepageController.dart';
 import 'package:rpcstudentapp/Widgets/BottomBarIndicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final index = AutoDisposeStateProvider<int>((ref) => 0);
@@ -44,7 +45,9 @@ class _HomeState extends ConsumerState<Home> {
     final controller = ref.watch(homepagecontroller);
 
     return StreamBuilder<dynamic>(
-        stream: controller.supabase.from("users").stream(primaryKey: ['id']).eq("supabase_id", controller.userID),
+        stream: controller.supabase
+            .from("users")
+            .stream(primaryKey: ['id']).eq("supabase_id", controller.userID),
         builder: (context, snapshot) {
           return Scaffold(
               backgroundColor: Colors.white,
@@ -173,6 +176,8 @@ class _HomeState extends ConsumerState<Home> {
                                                                   .circular(5),
                                                         ),
                                                         child: TextFormField(
+                                                          controller:
+                                                              controller.zcode,
                                                           keyboardType:
                                                               TextInputType
                                                                   .text,
@@ -234,10 +239,27 @@ class _HomeState extends ConsumerState<Home> {
                                                                 const Color(
                                                                     0xFFEC4969),
                                                           ),
-                                                          onPressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
+                                                          onPressed: () async {
+                                                            final prefs =
+                                                                await SharedPreferences
+                                                                    .getInstance();
+                                                            if (controller
+                                                                .zcode
+                                                                .text
+                                                                .isNotEmpty) {
+                                                              prefs.setString(
+                                                                  "code",
+                                                                  controller
+                                                                      .zcode
+                                                                      .text);
+                                                              // ignore: use_build_context_synchronously
+                                                              Navigator.of(
+                                                                      context)
+                                                                  .pop();
+                                                            }
+                                                            print(
+                                                                prefs.getString(
+                                                                    "code"));
                                                           },
                                                           child: Center(
                                                             child: Text(

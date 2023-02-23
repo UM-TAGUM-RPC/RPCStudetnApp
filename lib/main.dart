@@ -1,9 +1,32 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rpcstudentapp/Class/notif.dart';
 import 'package:rpcstudentapp/Constants/Routes.dart';
+import 'package:rpcstudentapp/Controller/firebasePushNotification.dart';
+import 'package:rpcstudentapp/Controller/sharedPref.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  "hig_importance_channel",
+  "High Importance Notification",
+  description: "This channel is used for important notifications",
+  importance: Importance.high,
+  playSound: true,
+  enableVibration: true,
+);
+Future<void> messagehandling(RemoteMessage? message) async {
+  await Firebase.initializeApp();
+  RemoteNotification? notification = message!.notification;
+  AndroidNotification? android = message.notification?.android;
+  if (notification != null && android != null) {
+  } else {}
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +39,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationServices().initNotification();
   runApp(const ProviderScope(child: MyApp()));
+
+  await Firebase.initializeApp();
+  await SharedPrefs.init();
+  FirebaseMessaging.onBackgroundMessage(messagehandling);
 }
 
 class MyApp extends ConsumerStatefulWidget {
@@ -26,9 +53,14 @@ class MyApp extends ConsumerStatefulWidget {
 
 class _MyAppState extends ConsumerState<MyApp> {
   @override
+  void initState() {
+    ref.read(firebaseMessagingProvider).onInit();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final router = ref.watch(routerKey);
-
     return ScreenUtilInit(
         designSize: const Size(375, 812),
         minTextAdapt: true,
