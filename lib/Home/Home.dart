@@ -101,15 +101,23 @@ class _HomeState extends ConsumerState<Home> {
                                   ),
                                 ],
                               ),
-                              Text(
-                                snapshot.hasData == true
-                                    ? "${snapshot.data[0]['firstName']}, ${snapshot.data[0]['lastName']}"
-                                    : "",
-                                style: TextStyle(
-                                    fontFamily: 'GeneralSansRegular',
-                                    fontSize: 15.sp,
-                                    color: CtrlColors.black),
-                              ),
+                              SizedBox(
+                                height: 30,
+                                width: 150,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: snapshot.data?.length ?? 0,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, ind) {
+                                      return Text(
+                                        "${snapshot.data[ind]['firstName']}, ${snapshot.data[ind]['lastName']}",
+                                        style: TextStyle(
+                                            fontFamily: 'GeneralSansRegular',
+                                            fontSize: 15.sp,
+                                            color: CtrlColors.black),
+                                      );
+                                    }),
+                              )
                             ],
                           ),
                         ),
@@ -117,177 +125,8 @@ class _HomeState extends ConsumerState<Home> {
                         Padding(
                           padding: const EdgeInsets.only(top: 10),
                           child: IconButton(
-                            onPressed: () {
-                              showGeneralDialog(
-                                  barrierLabel: '',
-                                  barrierDismissible: true,
-                                  context: context,
-                                  transitionDuration:
-                                      const Duration(milliseconds: 200),
-                                  transitionBuilder: (a, b, c, d) {
-                                    return Transform.scale(
-                                      scale: b.value,
-                                      child: Opacity(
-                                        opacity: b.value,
-                                        child: Dialog(
-                                          alignment: Alignment.center,
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              12.verticalSpace,
-                                              Container(
-                                                padding: EdgeInsets.all(5),
-                                                decoration: BoxDecoration(
-                                                  color: Colors.white,
-                                                ),
-                                                height: 200.h,
-                                                width: 200.w,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          right: 10, left: 10),
-                                                  child: Column(
-                                                    // ignore: prefer_const_literals_to_create_immutables
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                    .only(
-                                                                right: 50),
-                                                        child: Text(
-                                                          'Enter Code: ',
-                                                          style: TextStyle(
-                                                              fontFamily:
-                                                                  'GeneralSans',
-                                                              fontSize: 15.sp,
-                                                              color: CtrlColors
-                                                                  .black),
-                                                        ),
-                                                      ),
-                                                      10.verticalSpace,
-                                                      Container(
-                                                        width: 200.w,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(5),
-                                                        ),
-                                                        child: TextFormField(
-                                                          controller:
-                                                              controller.zcode,
-                                                          keyboardType:
-                                                              TextInputType
-                                                                  .text,
-                                                          decoration:
-                                                              InputDecoration(
-                                                            filled: true,
-                                                            floatingLabelBehavior:
-                                                                FloatingLabelBehavior
-                                                                    .auto,
-                                                            floatingLabelStyle:
-                                                                const TextStyle(
-                                                                    color:
-                                                                        CtrlColors
-                                                                            .red),
-                                                            labelText:
-                                                                "VG657BN",
-                                                            labelStyle: TextStyle(
-                                                                fontFamily:
-                                                                    "GeneralSans",
-                                                                fontSize: 12.sp,
-                                                                color: Color(
-                                                                    0xFF404042)),
-                                                            prefixIcon: Padding(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                          .only(
-                                                                      left: 20,
-                                                                      right:
-                                                                          20),
-                                                              child: SvgPicture
-                                                                  .asset(
-                                                                CtrlSvg
-                                                                    .giftCode,
-                                                                height: 18.h,
-                                                                width: 18.w,
-                                                              ),
-                                                            ),
-                                                            border: InputBorder
-                                                                .none,
-                                                            focusedBorder:
-                                                                InputBorder
-                                                                    .none,
-                                                            enabledBorder:
-                                                                InputBorder
-                                                                    .none,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      15.verticalSpace,
-                                                      ElevatedButton(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                            shape: RoundedRectangleBorder(
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5)),
-                                                            backgroundColor:
-                                                                const Color(
-                                                                    0xFFEC4969),
-                                                          ),
-                                                          onPressed: () async {
-                                                            final prefs =
-                                                                await SharedPreferences
-                                                                    .getInstance();
-                                                            if (controller
-                                                                .zcode
-                                                                .text
-                                                                .isNotEmpty) {
-                                                              prefs.setString(
-                                                                  "code",
-                                                                  controller
-                                                                      .zcode
-                                                                      .text);
-                                                              // ignore: use_build_context_synchronously
-                                                              Navigator.of(
-                                                                      context)
-                                                                  .pop();
-                                                            }
-                                                            print(
-                                                                prefs.getString(
-                                                                    "code"));
-                                                          },
-                                                          child: Center(
-                                                            child: Text(
-                                                              'Submit Code',
-                                                              style: TextStyle(
-                                                                  fontFamily:
-                                                                      'GeneralSans',
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize:
-                                                                      15.sp),
-                                                            ),
-                                                          )),
-                                                    ],
-                                                  ),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  pageBuilder: (BuildContext context,
-                                      Animation<double> animation,
-                                      Animation<double> secondaryAnimation) {
-                                    return const SizedBox.shrink();
-                                  });
+                            onPressed: () async {
+                              controller.popUp(context: context, ref: ref);
                             },
                             icon: SvgPicture.asset(CtrlSvg.addCode),
                           ),
@@ -367,36 +206,42 @@ class _HomeState extends ConsumerState<Home> {
                             ),
                           ],
                         ),
-                        Column(
-                          // ignore: prefer_const_literals_to_create_immutables
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(top: 25),
-                              child: Text(
-                                snapshot.hasData == true
-                                    ? snapshot.data[0]['idNumber']
-                                    : "",
-                                style: TextStyle(
-                                  color: CtrlColors.red,
-                                  fontFamily: "GeneralSans",
-                                  fontSize: 13.5.sp,
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.only(top: 1),
-                              child: Text(
-                                snapshot.hasData == true
-                                    ? "${snapshot.data[0]['firstName']}, ${snapshot.data[0]['lastName']}"
-                                    : "",
-                                style: TextStyle(
-                                  color: CtrlColors.black,
-                                  fontFamily: "GeneralSans",
-                                  fontSize: 13.5.sp,
-                                ),
-                              ),
-                            ),
-                          ],
+                        SingleChildScrollView(
+                          child: SizedBox(
+                            height: 98,
+                            width: 150,
+                            child: ListView.builder(
+                                itemCount: snapshot.data?.length ?? 0,
+                                itemBuilder: (context, index) {
+                                  return Column(
+                                    // ignore: prefer_const_literals_to_create_immutables
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(top: 25),
+                                        child: Text(
+                                          snapshot.data[index]['idNumber'],
+                                          style: TextStyle(
+                                            color: CtrlColors.red,
+                                            fontFamily: "GeneralSans",
+                                            fontSize: 13.5.sp,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 1),
+                                        child: Text(
+                                          "${snapshot.data[index]['firstName']}, ${snapshot.data[index]['lastName']}",
+                                          style: TextStyle(
+                                            color: CtrlColors.black,
+                                            fontFamily: "GeneralSans",
+                                            fontSize: 13.5.sp,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                }),
+                          ),
                         ),
                         const Padding(
                           padding: EdgeInsets.only(top: 40),

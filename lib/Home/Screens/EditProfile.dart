@@ -1,11 +1,16 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
 import 'package:rpcstudentapp/Constants/Validator.dart';
 import 'package:rpcstudentapp/Controller/editprofileController.dart';
+import 'package:rpcstudentapp/Controller/signupController.dart';
 import 'package:rpcstudentapp/Widgets/dialog.dart';
+
+import '../../Model/Courses.dart';
 
 final password = AutoDisposeStateProvider((ref) => true);
 final confirmpassword = AutoDisposeStateProvider((ref) => false);
@@ -23,6 +28,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
   @override
   void initState() {
     ref.read(editprofilecontroller).getID();
+    ref.read(P.notifier).showCourse();
     super.initState();
   }
 
@@ -31,10 +37,10 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     final obs1 = ref.watch(password);
     final obs = ref.watch(confirmpassword);
     final controller = ref.watch(editprofilecontroller);
-
+    final controller1 = ref.watch(P);
     return StreamBuilder<dynamic>(
         stream: controller.supabase
-  .from("users")
+            .from("users")
             .stream(primaryKey: ['id']).eq("supabase_id", controller.userID),
         builder: (context, snapshot) {
           return Scaffold(
@@ -248,6 +254,140 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                           height: 20,
                         ),
                         Container(
+                          decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            color: Color(0xFFF7F7F7),
+                          ),
+                          child: DropdownSearch<Course>(
+                            dropdownBuilder: (context, selectedItem) {
+                              return Text(
+                                selectedItem!.courseDepartment ??
+                                    "Search Course Department",
+                                style: TextStyle(
+                                    fontFamily: 'GeneralSansRegular',
+                                    fontSize: 15.sp,
+                                    color: CtrlColors.black),
+                              );
+                            },
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                                dropdownSearchDecoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 12,
+                                horizontal: 14,
+                              ),
+                              hintText: "Search Course Department",
+                              hintStyle: TextStyle(
+                                color: CtrlColors.black,
+                                fontSize: 15.sp,
+                                fontFamily: "GeneralSansRegular",
+                              ),
+                              fillColor: const Color(0xFFF7F7F7),
+                              prefixIcon: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: SvgPicture.asset(
+                                  CtrlSvg.idbadge,
+                                  width: 16.w,
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: Colors.transparent),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                  color: Colors.transparent,
+                                ),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            )),
+                            selectedItem: controller1.course,
+                            items: controller1.listcourse,
+                            itemAsString: (item) => item.courseDepartment!,
+                            popupProps: PopupProps.dialog(
+                              showSearchBox: true,
+                              searchFieldProps: TextFieldProps(
+                                style: TextStyle(
+                                  color: CtrlColors.black,
+                                  fontSize: 12.sp,
+                                  fontFamily: "GeneralSans",
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                decoration: InputDecoration(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                    horizontal: 14,
+                                  ),
+                                  hintText:
+                                      "Course Deparment: (${snapshot.hasData == true ? snapshot.data[0]['passwordCopy'] : ""})",
+                                  hintStyle: TextStyle(
+                                    color: CtrlColors.black,
+                                    fontSize: 15.sp,
+                                    fontFamily: "GeneralSansRegular",
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                  filled: true,
+                                  fillColor: const Color(0xFFF7F7F7),
+                                  prefixIcon: Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: SvgPicture.asset(
+                                      CtrlSvg.search,
+                                      width: 12.w,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Colors.transparent,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Colors.transparent,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                      color: Colors.transparent,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                              itemBuilder: (context, item, isSelected) =>
+                                  Padding(
+                                padding: const EdgeInsets.all(15.0),
+                                child: Text(
+                                  item.courseDepartment!,
+                                  style: TextStyle(
+                                    fontSize: 15.sp,
+                                    color: CtrlColors.black,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            onChanged: (value) {
+                              controller1.selectedItem(value);
+                            },
+                            validator: (value) {
+                              if (controller1.course == Course()) {
+                                return "Empty Course";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
                           // constraints: const BoxConstraints.tightFor(
                           //   width: 160,
                           // ),
@@ -260,7 +400,8 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                             obscureText: obs1,
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
-                                floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
                                 floatingLabelStyle:
                                     const TextStyle(color: CtrlColors.red),
                                 contentPadding:

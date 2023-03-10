@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
+import 'package:rpcstudentapp/Controller/homepageController.dart';
 import 'package:rpcstudentapp/Controller/profile.dart';
 
 class Profile extends ConsumerStatefulWidget {
@@ -22,8 +23,11 @@ class _ProfileState extends ConsumerState<Profile> {
   @override
   Widget build(BuildContext context) {
     final controller = ref.watch(profilecontroller);
+    final controller1 = ref.watch(homepagecontroller);
     return StreamBuilder<dynamic>(
-        stream: controller.supabase.from("users").stream(primaryKey: ['id']).eq("supabase_id", controller.userID),
+        stream: controller.supabase
+            .from("users")
+            .stream(primaryKey: ['id']).eq("supabase_id", controller.userID),
         builder: (context, snapshot) {
           return Scaffold(
             backgroundColor: Colors.white,
@@ -187,31 +191,31 @@ class _ProfileState extends ConsumerState<Profile> {
                                     color: CtrlColors.red,
                                     fontSize: 13.sp),
                               ),
+                              // 20.verticalSpace,
+                              // Text(
+                              //   'Advisor: ',
+                              //   style: TextStyle(
+                              //       fontFamily: 'GeneralSansRegular',
+                              //       color: CtrlColors.black,
+                              //       fontSize: 13.sp),
+                              // ),
+                              // Text(
+                              //   'Jayce Mico Dignadice',
+                              //   style: TextStyle(
+                              //       fontFamily: 'GeneralSans',
+                              //       color: CtrlColors.red,
+                              //       fontSize: 13.sp),
+                              // ),
                               20.verticalSpace,
                               Text(
-                                'Advisor: ',
+                                'THESIS CODE:',
                                 style: TextStyle(
                                     fontFamily: 'GeneralSansRegular',
                                     color: CtrlColors.black,
                                     fontSize: 13.sp),
                               ),
                               Text(
-                                'Jayce Mico Dignadice',
-                                style: TextStyle(
-                                    fontFamily: 'GeneralSans',
-                                    color: CtrlColors.red,
-                                    fontSize: 13.sp),
-                              ),
-                              20.verticalSpace,
-                              Text(
-                                'THESIS CODE: ',
-                                style: TextStyle(
-                                    fontFamily: 'GeneralSansRegular',
-                                    color: CtrlColors.black,
-                                    fontSize: 13.sp),
-                              ),
-                              Text(
-                                '123456634',
+                                controller1.code ?? "",
                                 style: TextStyle(
                                     fontFamily: 'GeneralSans',
                                     color: CtrlColors.red,
@@ -220,6 +224,7 @@ class _ProfileState extends ConsumerState<Profile> {
                               40.verticalSpace,
                               InkWell(
                                 onTap: () {
+                                  controller1.removeuser(context: context);
                                   context.go("/login");
                                 },
                                 child: Row(
