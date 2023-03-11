@@ -5,9 +5,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:readmore/readmore.dart';
 import 'package:rpcstudentapp/Class/notif.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
+import 'package:rpcstudentapp/Constants/generateSheet.dart';
 import 'package:rpcstudentapp/Controller/homepageController.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -39,6 +42,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         builder: (context, snapshot) {
           // ignore: prefer_is_empty
           if (snapshot.data?.length == 0) {
+            print(controller.userID);
             return Center(
                 child: Card(
               shape: RoundedRectangleBorder(
@@ -307,156 +311,6 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ),
                           ),
                         ),
-                        // Padding(
-                        //   padding: const EdgeInsets.only(left: 10),
-                        //   child: Column(
-                        //     crossAxisAlignment: CrossAxisAlignment.start,
-                        //     children: [
-                        //       SizedBox(
-                        //         height: 20,
-                        //       ),
-                        //       Row(
-                        //         // ignore: prefer_const_literals_to_create_immutables
-                        //         children: [
-                        //           Text(
-                        //             "Next to do: ",
-                        //             style: TextStyle(
-                        //               color: Color(0xFF404042),
-                        //               fontFamily: "GeneralSansRegular",
-                        //               fontSize: 10,
-                        //             ),
-                        //           ),
-                        //           Padding(
-                        //             padding: const EdgeInsets.only(top: 2.5),
-                        //             child: Text(
-                        //               "PENDING",
-                        //               style: TextStyle(
-                        //                 color: CtrlColors.red,
-                        //                 fontFamily: "GeneralSans",
-                        //                 fontSize: 8,
-                        //               ),
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //       SizedBox(
-                        //         height: 10,
-                        //       ),
-                        //       Text(
-                        //         snapshot.data![index]['approve_title'] == true
-                        //             ? "Data Gathering"
-                        //             : snapshot.data![index]['outline_proposal'] ==
-                        //                     true
-                        //                 ? "Manuscript for Oral Presentation"
-                        //                 : snapshot.data![index]
-                        //                             ['outline_defense'] ==
-                        //                         true
-                        //                     ? "Final Oral Presentation"
-                        //                     : snapshot.data![index]
-                        //                                 ['data_gathering'] ==
-                        //                             true
-                        //                         ? "Routing"
-                        //                         : snapshot.data![index]
-                        //                                     ['manuscript'] ==
-                        //                                 true
-                        //                             ? "Plagiarism Check"
-                        //                             : snapshot.data![index][
-                        //                                         'final_oral_prep'] ==
-                        //                                     true
-                        //                                 ? "Approval"
-                        //                                 : snapshot.data![index]
-                        //                                             ['routing'] ==
-                        //                                         true
-                        //                                     ? "Submission of Approved Final Output(Book Form)"
-                        //                                     : snapshot.data![index][
-                        //                                                 'plagiarism'] ==
-                        //                                             true
-                        //                                         ? "Complete"
-                        //                                         : "Complete",
-                        //         style: TextStyle(
-                        //           color: CtrlColors.red,
-                        //           fontFamily: "GeneralSans",
-                        //           fontSize: 15,
-                        //         ),
-                        //       ),
-                        //       SizedBox(
-                        //         height: 10,
-                        //       ),
-                        //       Row(
-                        //         // ignore: prefer_const_literals_to_create_immutables
-                        //         children: [
-                        //           Text(
-                        //             "Afther That: ",
-                        //             style: TextStyle(
-                        //               color: Color(0xFF404042),
-                        //               fontFamily: "GeneralSansRegular",
-                        //               fontSize: 10,
-                        //             ),
-                        //           ),
-                        //           // Padding(
-                        //           //   padding: const EdgeInsets.only(top: 2.5),
-                        //           //   child: Text(
-                        //           //     "PENDING",
-                        //           //     style: TextStyle(
-                        //           //       color: CtrlColors.red,
-                        //           //       fontFamily: "GeneralSans",
-                        //           //       fontSize: 8,
-                        //           //     ),
-                        //           //   ),
-                        //           // ),
-                        //         ],
-                        //       ),
-                        //       SizedBox(
-                        //         height: 5,
-                        //       ),
-                        //       Text(
-                        //         snapshot.data![0]['approve_title'] == true
-                        //             ? "Outline Defense"
-                        //             : snapshot.data![0]['outline_proposal'] == true
-                        //                 ? "Data Gathering"
-                        //                 : snapshot.data![0]['outline_defense'] ==
-                        //                         true
-                        //                     ? "Manuscript for Oral Presentation"
-                        //                     : snapshot.data![0]['data_gathering'] ==
-                        //                             true
-                        //                         ? "Final Oral Presentation"
-                        //                         : snapshot.data![0]['manuscript'] ==
-                        //                                 true
-                        //                             ? "Routing"
-                        //                             : snapshot.data![0][
-                        //                                         'final_oral_prep'] ==
-                        //                                     true
-                        //                                 ? "Plagiarism Check"
-                        //                                 : snapshot.data![0]
-                        //                                             ['routing'] ==
-                        //                                         true
-                        //                                     ? "Approval"
-                        //                                     : snapshot.data![0][
-                        //                                                 'plagiarism'] ==
-                        //                                             true
-                        //                                         ? "Submission of Approved Final Output(Book Form)"
-                        //                                         : snapshot.data![0][
-                        //                                                     'approval'] ==
-                        //                                                 true
-                        //                                             ? "COMPLETE"
-                        //                                             : snapshot.data![0]['final_output'] ==
-                        //                                                     true
-                        //                                                 ? "COMPLETE"
-                        //                                                 : snapshot.data![0]['subject_teacher'] ==
-                        //                                                         true
-                        //                                                     ? "COMPLETE"
-                        //                                                     : snapshot.data![0]['research_coordinator'] == true
-                        //                                                         ? "COMPLETE"
-                        //                                                         : "",
-                        //         style: TextStyle(
-                        //           color: CtrlColors.red,
-                        //           fontFamily: "GeneralSans",
-                        //           fontSize: 15,
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
                         const Padding(
                           padding: EdgeInsets.only(top: 10),
                           child: SizedBox(
@@ -535,9 +389,34 @@ class _HomePageState extends ConsumerState<HomePage> {
                                             BorderRadius.circular(10)),
                                     backgroundColor: CtrlColors.black,
                                   ),
-                                  onPressed: () {
-                                    // NotificationServices()
-                                    //     .showNotification(1, "title", "body", 1);
+                                  onPressed: () async {
+                                    String approvetitle = snapshot.data![index]['approve_title_date'] == null ? " " :DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['approve_title_date']));
+                                    String outlineproposal =snapshot.data![index]['outline_proposal_date'] == null ? " " :DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['outline_proposal_date'])).toString();
+                                    String outlinedefense =snapshot.data![index]['outline_defense_date'] == null ? " " :DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['outline_defense_date'])).toString();
+                                    String datagather =snapshot.data![index]['data_gathering_date'] == null ? " ": DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['data_gathering_date'])).toString();
+                                    String manuscript =snapshot.data![index]['manuscript_date'] == null ? " ":DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['manuscript_date'])).toString();
+                                    String finaloralprep =snapshot.data![index]['final_oral_prep_date'] == null ? " ":DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['final_oral_prep_date'])).toString();
+                                    String routing =snapshot.data![index]['routing_date'] == null ? "  " :DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['routing_date'])).toString();
+                                    String plagia =snapshot.data![index]['plagiarism_date'] == null ? " " :DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['plagiarism_date'])).toString();
+                                    String approval =snapshot.data![index]['approval_date'] == null ? "" :DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['approval_date'])).toString();
+                                    String finaloutput=snapshot.data![index]['final_output_date'] == null ? " ":DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['final_output_date'])).toString();
+                              
+                                  
+                                  
+                        
+                                    controller.downloadFile(
+                                        context: context,
+                                        approve_title: approvetitle,
+                                        outline_proposal: outlineproposal,
+                                        outline_defense:outlinedefense ,
+                                        data_gather: datagather,
+                                        manuscript: manuscript,
+                                        final_oral_prep: finaloralprep,
+                                        routing:routing,
+                                        plagiarism: plagia,
+                                        approval: approval,
+                                        final_output: finaloutput,
+                                        advisor_id: snapshot.data![0]['id_adivsor']['advisor_id'],);
                                   },
                                   child: const Center(
                                     child: Text(

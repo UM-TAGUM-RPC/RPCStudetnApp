@@ -10,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rpcstudentapp/Constants/Routes.dart';
 import 'package:rpcstudentapp/Widgets/dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,6 +18,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:dio/dio.dart' as d;
 
 import '../Constants/Constants.dart';
+import '../Constants/generateSheet.dart';
 
 final homepagecontroller = ChangeNotifierProvider<HomePagePod>((ref) {
   return HomePagePod();
@@ -41,6 +43,71 @@ class HomePagePod extends ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     code = prefs.getString("code");
     notifyListeners();
+  }
+
+  downloadFile(
+      {context,
+      advisor_id,
+      approve_title,
+      outline_proposal,
+      outline_defense,
+      data_gather,
+      manuscript,
+      final_oral_prep,
+      routing,
+      plagiarism,
+      approval,
+      final_output}) async {
+    var statusGrant = await Permission.storage.status;
+    if (!statusGrant.isGranted) {
+      await Permission.storage.request();
+      print(statusGrant.isGranted);
+    }
+
+    List<String> names = <String>[];
+    final advisor_data =
+        await supabase.from("users").select().eq("supabase_id", advisor_id);
+    final student_id =
+        await supabase.from("monitoring_sheet").select().eq("z_code", code);
+
+    for (int x = 0;
+        x < student_id.first["id_student"]["students_id"].length;
+        x++) {
+      final student_data = await supabase.from("users").select().eq(
+          "supabase_id",
+          student_id.first["id_student"]["students_id"][x]['id_student']);
+
+      names.add(
+          "${student_data.first["firstName"]} ${student_data.first["lastName"]}");
+    }
+
+    String newPath = "Monitor Sheet.pdf";
+    GenerateSheet.generateSheettoPdf(
+        name: newPath,
+        names: names,
+        approve_title: approve_title,
+        outline_proposal: outline_proposal,
+        outline_defense: outline_defense,
+        data_gather: data_gather,
+        manuscript: manuscript,
+        final_oral_prep: final_oral_prep,
+        routing: routing,
+        plagiarism: plagiarism,
+        approval: approval,
+        final_output: final_output,
+        advisorname:
+            "${advisor_data.first["firstName"]} ${advisor_data.first["lastName"]}");
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        behavior: SnackBarBehavior.floating,
+        dismissDirection: DismissDirection.endToStart,
+        backgroundColor: CtrlColors.red,
+        content: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            "Download Succesfully",
+            style: TextStyle(color: Colors.white),
+          ),
+        )));
   }
 
   // ignore: body_might_complete_normally_nullable
@@ -691,20 +758,5 @@ class HomePagePod extends ChangeNotifier {
             Animation<double> secondaryAnimation) {
           return const SizedBox.shrink();
         });
-  }
-
-  removeuser({context}) async {
-    final prefs = await SharedPreferences.getInstance();
-    DialogPop.dialogup(
-        context: context,
-        buttontext: "Yes",
-        message: "Are you sure?",
-        onpress: () {
-          prefs.remove("supabase_id");
-          prefs.remove("code");
-          GoRouter.of(context).pop();
-          GoRouter.of(context).goNamed(StringRoutes.login);
-        });
-    notifyListeners();
   }
 }

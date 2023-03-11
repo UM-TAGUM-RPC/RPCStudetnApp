@@ -1,4 +1,4 @@
-import 'package:badges/badges.dart';
+import 'package:badges/badges.dart' as badges;
 import 'package:flutter/material.dart';
 import 'dart:ui' show lerpDouble;
 
@@ -142,10 +142,8 @@ class _BottomIndicatorBarState extends State<BottomIndicatorBar> {
     //   height: 25.5,
     //   width: 25.5,
     // );
-    return Badge(
+    return badges.Badge(
       showBadge: item.showBadge!,
-      animationType: BadgeAnimationType.slide,
-      animationDuration: const Duration(milliseconds: 600),
       badgeContent: Text(
         item.count!.toString(),
         overflow: TextOverflow.visible,

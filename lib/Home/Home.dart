@@ -10,6 +10,7 @@ import 'package:rpcstudentapp/Constants/Routes.dart';
 import 'package:rpcstudentapp/Controller/homepageController.dart';
 import 'package:rpcstudentapp/Widgets/BottomBarIndicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:rpcstudentapp/Widgets/dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -324,8 +325,19 @@ class _HomeState extends ConsumerState<Home> {
                         ),
                         20.verticalSpace,
                         InkWell(
-                          onTap: () {
-                            controller.removeuser(context: context);
+                          onTap: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            DialogPop.dialogup(
+                                context: context,
+                                buttontext: "Yes",
+                                message: "Are you want to logout?",
+                                onpress: () {
+                                  prefs.remove("supabase_id");
+                                  prefs.remove("code");
+                                  // GoRouter.of(context).pop();
+                                  GoRouter.of(context)
+                                      .goNamed(StringRoutes.login);
+                                });
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(top: 10, right: 60),

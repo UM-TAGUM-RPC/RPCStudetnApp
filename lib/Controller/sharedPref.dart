@@ -21,4 +21,6 @@ class SharedPrefs {
   static read(String? key) => preferences!.getString(key ?? "") ?? "";
 
   static remove(String? key) async => await preferences!.remove(key!);
+
+  
 }

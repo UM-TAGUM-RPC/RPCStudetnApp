@@ -55,9 +55,7 @@ class LoginPod extends ChangeNotifier {
     try {
       final loginresponse = await supabase.auth
           .signInWithPassword(email: email.text, password: password.text)
-          .whenComplete(() {
-       
-      });
+          .whenComplete(() {});
       prefs.setString("supabase_id", loginresponse.user!.id);
       if (loginresponse.user!.id != "") {
         final userID = await supabase
@@ -77,7 +75,7 @@ class LoginPod extends ChangeNotifier {
         if (result.isNotEmpty) {
           if (result.first["token_device"] == res) {
             if (!isfalse) return;
-            Navigator.pop(context);
+            GoRouter.of(context).pop();
             GoRouter.of(context).goNamed(StringRoutes.homepage);
             log("No Changes from notif token");
           } else {
@@ -90,7 +88,7 @@ class LoginPod extends ChangeNotifier {
                 .eq("supabase_id", prefs.getString("supabase_id"))
                 .whenComplete(() {
                   if (!isfalse) return;
-                  Navigator.pop(context);
+                  GoRouter.of(context).pop();
                   GoRouter.of(context).goNamed(StringRoutes.homepage);
                 });
           }
@@ -110,6 +108,7 @@ class LoginPod extends ChangeNotifier {
         }
       }
     } on AuthException {
+      GoRouter.of(context).pop();
       DialogPop.dialogup(
           context: context,
           buttontext: "Close",

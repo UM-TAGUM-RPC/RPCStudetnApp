@@ -34,8 +34,8 @@ getuser() async {
 final routerKey = Provider<GoRouter>((ref) {
   getuser();
   return GoRouter(
-    navigatorKey: rootNavigator,
-    initialLocation: supabaseid == '' ? '/login' : '/homepage',
+    navigatorKey: supabaseid == null ? rootNavigator : shellNavigator,
+    initialLocation: supabaseid == null ? '/login' : '/homepage',
     redirect: (context, state) {
       return null;
     },
@@ -56,16 +56,16 @@ final routerKey = Provider<GoRouter>((ref) {
           );
         },
       ),
-
       GoRoute(
         name: StringRoutes.profile,
         path: '/profile',
-        builder: (BuildContext context, GoRouterState state) {
+        builder: (context, state) {
           return Profile(
             key: state.pageKey,
           );
         },
       ),
+
       GoRoute(
         name: StringRoutes.history,
         path: '/history',

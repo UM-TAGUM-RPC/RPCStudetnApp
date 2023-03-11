@@ -16,11 +16,20 @@ import 'package:rpcstudentapp/Controller/loginController.dart';
 final obsecure = AutoDisposeStateProvider((ref) => true);
 final GlobalKey<FormState> loginkey = GlobalKey<FormState>();
 
-class Login extends ConsumerWidget {
+class Login extends ConsumerStatefulWidget {
   const Login({super.key});
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _LoginState();
+}
+
+class _LoginState extends ConsumerState<Login> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final obs = ref.watch(obsecure);
     final controller = ref.watch(logincontroller);
 
@@ -248,7 +257,9 @@ class Login extends ConsumerWidget {
                                       onPressed: () {
                                         if (loginkey.currentState!.validate() ==
                                             true) {
-                                          controller.login(context: context,);
+                                          controller.login(
+                                            context: context,
+                                          );
                                         } else {
                                           return;
                                         }
