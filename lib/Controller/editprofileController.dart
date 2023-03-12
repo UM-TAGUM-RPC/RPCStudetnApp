@@ -68,8 +68,7 @@ class EditProfilePod extends ChangeNotifier {
             "firstName": firstname.text == "" ? firstName : firstname.text,
             "middleName": middlename.text == "" ? middleName : middlename.text,
             "lastName": lastname.text == "" ? lastName : lastname.text,
-            "mobileNumber":
-                mobilenumber.text == "" ? mobileNumber : mobilenumber.text,
+            "mobileNumber": mobilenumber.text == "" ? mobileNumber : mobilenumber.text,
             "birth": birthdate.text == "" ? birthDate : birthdate.text,
             "passwordCopy": password.text == "" ? passwordCopy : password.text,
           })

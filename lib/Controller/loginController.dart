@@ -29,6 +29,7 @@ class LoginPod extends ChangeNotifier {
     notifyListeners();
     final prefs = await SharedPreferences.getInstance();
     final res = await FirebaseMessaging.instance.getToken();
+
     showDialog(
         barrierDismissible: false,
         context: context,
@@ -63,47 +64,58 @@ class LoginPod extends ChangeNotifier {
             .select()
             .eq("supabase_id", prefs.getString("supabase_id"))
             .single();
+
         if (userID != "") {
-          prefs.setInt("id", userID['id']);
-        }
-
-        final result = await supabase
-            .from("notification_token_device")
-            .select()
-            .eq("supabase_id", prefs.getString("supabase_id"));
-
-        if (result.isNotEmpty) {
-          if (result.first["token_device"] == res) {
-            if (!isfalse) return;
-            GoRouter.of(context).pop();
-            GoRouter.of(context).goNamed(StringRoutes.homepage);
-            log("No Changes from notif token");
-          } else {
-            log("Update token");
-            await supabase
+          if (userID['role'] == "Student") {
+            prefs.setInt("id", userID['id']);
+            final result = await supabase
                 .from("notification_token_device")
-                .update({
+                .select()
+                .eq("supabase_id", prefs.getString("supabase_id"));
+
+            if (result.isNotEmpty) {
+              if (result.first["token_device"] == res) {
+                if (!isfalse) return;
+                GoRouter.of(context).pop();
+                GoRouter.of(context).goNamed(StringRoutes.homepage);
+                log("No Changes from notif token");
+              } else {
+                log("Update token");
+                await supabase
+                    .from("notification_token_device")
+                    .update({
+                      "token_device": res,
+                    })
+                    .eq("supabase_id", prefs.getString("supabase_id"))
+                    .whenComplete(() {
+                      if (!isfalse) return;
+                      GoRouter.of(context).pop();
+                      GoRouter.of(context).goNamed(StringRoutes.homepage);
+                    });
+              }
+            } else {
+              log("Add user data");
+              try {
+                await supabase.from("notification_token_device").insert({
+                  "supabase_id": prefs.getString("supabase_id"),
+                  "user_id": prefs.getInt("id"),
                   "token_device": res,
-                })
-                .eq("supabase_id", prefs.getString("supabase_id"))
-                .whenComplete(() {
-                  if (!isfalse) return;
-                  GoRouter.of(context).pop();
+                }).whenComplete(() {
                   GoRouter.of(context).goNamed(StringRoutes.homepage);
                 });
-          }
-        } else {
-          log("Add user data");
-          try {
-            await supabase.from("notification_token_device").insert({
-              "supabase_id": prefs.getString("supabase_id"),
-              "user_id": prefs.getInt("id"),
-              "token_device": res,
-            }).whenComplete(() {
-              GoRouter.of(context).goNamed(StringRoutes.homepage);
-            });
-          } on PostgrestException catch (e) {
-            log(e.message, name: "From Notif");
+              } on PostgrestException catch (e) {
+                log(e.message, name: "From Notif");
+              }
+            }
+          } else {
+            GoRouter.of(context).pop();
+            DialogPop.dialogup(
+                context: context,
+                buttontext: "Close",
+                message: "User Account is not a Student",
+                onpress: () {
+                  GoRouter.of(context).pop();
+                });
           }
         }
       }

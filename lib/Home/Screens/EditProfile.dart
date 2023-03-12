@@ -253,137 +253,142 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Color(0xFFF7F7F7),
-                          ),
-                          child: DropdownSearch<Course>(
-                            dropdownBuilder: (context, selectedItem) {
-                              return Text(
-                                selectedItem!.courseDepartment ??
-                                    "Search Course Department",
-                                style: TextStyle(
-                                    fontFamily: 'GeneralSansRegular',
-                                    fontSize: 15.sp,
-                                    color: CtrlColors.black),
-                              );
-                            },
-                            dropdownDecoratorProps: DropDownDecoratorProps(
-                                dropdownSearchDecoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                vertical: 12,
-                                horizontal: 14,
-                              ),
-                              hintText: "Search Course Department",
-                              hintStyle: TextStyle(
-                                color: CtrlColors.black,
-                                fontSize: 15.sp,
-                                fontFamily: "GeneralSansRegular",
-                              ),
-                              fillColor: const Color(0xFFF7F7F7),
-                              prefixIcon: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: SvgPicture.asset(
-                                  CtrlSvg.idbadge,
-                                  width: 16.w,
-                                ),
-                              ),
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide:
-                                    BorderSide(color: Colors.transparent),
-                              ),
-                              border: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                  color: Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            )),
-                            selectedItem: controller1.course,
-                            items: controller1.listcourse,
-                            itemAsString: (item) => item.courseDepartment!,
-                            popupProps: PopupProps.dialog(
-                              showSearchBox: true,
-                              searchFieldProps: TextFieldProps(
-                                style: TextStyle(
-                                  color: CtrlColors.black,
-                                  fontSize: 12.sp,
-                                  fontFamily: "GeneralSans",
-                                  fontWeight: FontWeight.w700,
-                                ),
-                                decoration: InputDecoration(
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    vertical: 12,
-                                    horizontal: 14,
-                                  ),
-                                  hintText:
-                                      "Course Deparment: (${snapshot.hasData == true ? snapshot.data[0]['passwordCopy'] : ""})",
-                                  hintStyle: TextStyle(
-                                    color: CtrlColors.black,
-                                    fontSize: 15.sp,
-                                    fontFamily: "GeneralSansRegular",
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                  filled: true,
-                                  fillColor: const Color(0xFFF7F7F7),
-                                  prefixIcon: Padding(
-                                    padding: const EdgeInsets.all(16.0),
-                                    child: SvgPicture.asset(
-                                      CtrlSvg.search,
-                                      width: 12.w,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Colors.transparent,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Colors.transparent,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                      color: Colors.transparent,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                              ),
-                              itemBuilder: (context, item, isSelected) =>
-                                  Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Text(
-                                  item.courseDepartment!,
-                                  style: TextStyle(
-                                    fontSize: 15.sp,
-                                    color: CtrlColors.black,
-                                  ),
-                                ),
-                              ),
+                        StreamBuilder<dynamic>(
+                          
+                          builder: (context, snapshot) {
+                          return Container(
+                            decoration: const BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                              color: Color(0xFFF7F7F7),
                             ),
-                            onChanged: (value) {
-                              controller1.selectedItem(value);
-                            },
-                            validator: (value) {
-                              if (controller1.course == Course()) {
-                                return "Empty Course";
-                              } else {
-                                return null;
-                              }
-                            },
-                          ),
-                        ),
+                            child: DropdownSearch<Course>(
+                              dropdownBuilder: (context, selectedItem) {
+                                return Text(
+                                  selectedItem!.courseDepartment ??
+                                      "Search Course Department",
+                                  style: TextStyle(
+                                      fontFamily: 'GeneralSansRegular',
+                                      fontSize: 15.sp,
+                                      color: CtrlColors.black),
+                                );
+                              },
+                              dropdownDecoratorProps: DropDownDecoratorProps(
+                                  dropdownSearchDecoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 12,
+                                  horizontal: 14,
+                                ),
+                                hintText: "Search Course Department",
+                                hintStyle: TextStyle(
+                                  color: CtrlColors.black,
+                                  fontSize: 8.sp,
+                                  fontFamily: "GeneralSansRegular",
+                                ),
+                                fillColor: const Color(0xFFF7F7F7),
+                                prefixIcon: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: SvgPicture.asset(
+                                    CtrlSvg.idbadge,
+                                    width: 16.w,
+                                  ),
+                                ),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: Colors.transparent),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors.transparent,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                    color: Colors.transparent,
+                                  ),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              )),
+                              selectedItem: controller1.course,
+                              items: controller1.listcourse,
+                              itemAsString: (item) => item.courseDepartment!,
+                              popupProps: PopupProps.dialog(
+                                showSearchBox: true,
+                                searchFieldProps: TextFieldProps(
+                                  style: TextStyle(
+                                    color: CtrlColors.black,
+                                    fontSize: 12.sp,
+                                    fontFamily: "GeneralSans",
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                  decoration: InputDecoration(
+                                    contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 12,
+                                      horizontal: 14,
+                                    ),
+                                    hintText:
+                                        "Course Deparment: (${snapshot.hasData == true ? snapshot.data[0]['passwordCopy'] : ""})",
+                                    hintStyle: TextStyle(
+                                      color: CtrlColors.black,
+                                      fontSize: 15.sp,
+                                      fontFamily: "GeneralSansRegular",
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                    filled: true,
+                                    fillColor: const Color(0xFFF7F7F7),
+                                    prefixIcon: Padding(
+                                      padding: const EdgeInsets.all(16.0),
+                                      child: SvgPicture.asset(
+                                        CtrlSvg.search,
+                                        width: 12.w,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.transparent,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    border: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.transparent,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                        color: Colors.transparent,
+                                      ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                ),
+                                itemBuilder: (context, item, isSelected) =>
+                                    Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Text(
+                                    item.courseDepartment!,
+                                    style: TextStyle(
+                                      fontSize: 15.sp,
+                                      color: CtrlColors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              onChanged: (value) {
+                                controller1.selectedItem(value);
+                              },
+                              validator: (value) {
+                                if (controller1.course == Course()) {
+                                  return "Empty Course";
+                                } else {
+                                  return null;
+                                }
+                              },
+                            ),
+                          );
+                        }),
                         const SizedBox(
                           height: 20,
                         ),

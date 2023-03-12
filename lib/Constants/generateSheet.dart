@@ -504,12 +504,12 @@ class GenerateSheet {
             ),
           ]),
         );
+        // print(listRow.length);
       }
     } finally {
       if (listRow.length != 24) {
-        final count = 24 - listRow.length; //11
+        final count = 24 - listRow.length; //21
         for (int x = 0; listRow.length < count; x++) {
-          // 13 < 11
           listRow.add(TableRow(children: [
             Center(
               child: Padding(
