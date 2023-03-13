@@ -11,6 +11,7 @@ import 'package:readmore/readmore.dart';
 import 'package:rpcstudentapp/Class/notif.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
 import 'package:rpcstudentapp/Constants/generateSheet.dart';
+import 'package:rpcstudentapp/Controller/editprofileController.dart';
 import 'package:rpcstudentapp/Controller/homepageController.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/timezone.dart' as tz;
@@ -390,33 +391,110 @@ class _HomePageState extends ConsumerState<HomePage> {
                                     backgroundColor: CtrlColors.black,
                                   ),
                                   onPressed: () async {
-                                    String approvetitle = snapshot.data![index]['approve_title_date'] == null ? " " :DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['approve_title_date']));
-                                    String outlineproposal =snapshot.data![index]['outline_proposal_date'] == null ? " " :DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['outline_proposal_date'])).toString();
-                                    String outlinedefense =snapshot.data![index]['outline_defense_date'] == null ? " " :DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['outline_defense_date'])).toString();
-                                    String datagather =snapshot.data![index]['data_gathering_date'] == null ? " ": DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['data_gathering_date'])).toString();
-                                    String manuscript =snapshot.data![index]['manuscript_date'] == null ? " ":DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['manuscript_date'])).toString();
-                                    String finaloralprep =snapshot.data![index]['final_oral_prep_date'] == null ? " ":DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['final_oral_prep_date'])).toString();
-                                    String routing =snapshot.data![index]['routing_date'] == null ? "  " :DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['routing_date'])).toString();
-                                    String plagia =snapshot.data![index]['plagiarism_date'] == null ? " " :DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['plagiarism_date'])).toString();
-                                    String approval =snapshot.data![index]['approval_date'] == null ? "" :DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['approval_date'])).toString();
-                                    String finaloutput=snapshot.data![index]['final_output_date'] == null ? " ":DateFormat("yyyy-MM-dd").format(DateTime.parse(snapshot.data![index]['final_output_date'])).toString();
-                              
-                                  
-                                  
-                        
+                                    String approvetitle = snapshot.data![index]
+                                                ['approve_title_date'] ==
+                                            null
+                                        ? " "
+                                        : DateFormat("yyyy-MM-dd").format(
+                                            DateTime.parse(snapshot.data![index]
+                                                ['approve_title_date']));
+                                    String outlineproposal = snapshot
+                                                    .data![index]
+                                                ['outline_proposal_date'] ==
+                                            null
+                                        ? " "
+                                        : DateFormat("yyyy-MM-dd")
+                                            .format(DateTime.parse(
+                                                snapshot.data![index]
+                                                    ['outline_proposal_date']))
+                                            .toString();
+                                    String outlinedefense = snapshot
+                                                    .data![index]
+                                                ['outline_defense_date'] ==
+                                            null
+                                        ? " "
+                                        : DateFormat("yyyy-MM-dd")
+                                            .format(DateTime.parse(
+                                                snapshot.data![index]
+                                                    ['outline_defense_date']))
+                                            .toString();
+                                    String datagather = snapshot.data![index]
+                                                ['data_gathering_date'] ==
+                                            null
+                                        ? " "
+                                        : DateFormat("yyyy-MM-dd")
+                                            .format(DateTime.parse(
+                                                snapshot.data![index]
+                                                    ['data_gathering_date']))
+                                            .toString();
+                                    String manuscript = snapshot.data![index]
+                                                ['manuscript_date'] ==
+                                            null
+                                        ? " "
+                                        : DateFormat("yyyy-MM-dd")
+                                            .format(DateTime.parse(
+                                                snapshot.data![index]
+                                                    ['manuscript_date']))
+                                            .toString();
+                                    String finaloralprep = snapshot.data![index]
+                                                ['final_oral_prep_date'] ==
+                                            null
+                                        ? " "
+                                        : DateFormat("yyyy-MM-dd")
+                                            .format(DateTime.parse(
+                                                snapshot.data![index]
+                                                    ['final_oral_prep_date']))
+                                            .toString();
+                                    String routing = snapshot.data![index]
+                                                ['routing_date'] ==
+                                            null
+                                        ? "  "
+                                        : DateFormat("yyyy-MM-dd")
+                                            .format(DateTime.parse(snapshot
+                                                .data![index]['routing_date']))
+                                            .toString();
+                                    String plagia = snapshot.data![index]
+                                                ['plagiarism_date'] ==
+                                            null
+                                        ? " "
+                                        : DateFormat("yyyy-MM-dd")
+                                            .format(DateTime.parse(
+                                                snapshot.data![index]
+                                                    ['plagiarism_date']))
+                                            .toString();
+                                    String approval = snapshot.data![index]
+                                                ['approval_date'] ==
+                                            null
+                                        ? ""
+                                        : DateFormat("yyyy-MM-dd")
+                                            .format(DateTime.parse(snapshot
+                                                .data![index]['approval_date']))
+                                            .toString();
+                                    String finaloutput = snapshot.data![index]
+                                                ['final_output_date'] ==
+                                            null
+                                        ? " "
+                                        : DateFormat("yyyy-MM-dd")
+                                            .format(DateTime.parse(
+                                                snapshot.data![index]
+                                                    ['final_output_date']))
+                                            .toString();
+
                                     controller.downloadFile(
-                                        context: context,
-                                        approve_title: approvetitle,
-                                        outline_proposal: outlineproposal,
-                                        outline_defense:outlinedefense ,
-                                        data_gather: datagather,
-                                        manuscript: manuscript,
-                                        final_oral_prep: finaloralprep,
-                                        routing:routing,
-                                        plagiarism: plagia,
-                                        approval: approval,
-                                        final_output: finaloutput,
-                                        advisor_id: snapshot.data![0]['id_adivsor']['advisor_id'],);
+                                      context: context,
+                                      approve_title: approvetitle,
+                                      outline_proposal: outlineproposal,
+                                      outline_defense: outlinedefense,
+                                      data_gather: datagather,
+                                      manuscript: manuscript,
+                                      final_oral_prep: finaloralprep,
+                                      routing: routing,
+                                      plagiarism: plagia,
+                                      approval: approval,
+                                      final_output: finaloutput,
+                                      advisor_id: snapshot.data![0]
+                                          ['id_adivsor']['advisor_id'],
+                                    );
                                   },
                                   child: const Center(
                                     child: Text(

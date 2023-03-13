@@ -54,6 +54,14 @@ class LoginPod extends ChangeNotifier {
           );
         });
     try {
+      // await supabase
+      //     .from("users")
+      //     .select()
+      //     .eq("email", email.text)
+      //     .single()
+      //     .whenComplete(() async {
+
+      // });
       final loginresponse = await supabase.auth
           .signInWithPassword(email: email.text, password: password.text)
           .whenComplete(() {});
@@ -64,7 +72,6 @@ class LoginPod extends ChangeNotifier {
             .select()
             .eq("supabase_id", prefs.getString("supabase_id"))
             .single();
-
         if (userID != "") {
           if (userID['role'] == "Student") {
             prefs.setInt("id", userID['id']);

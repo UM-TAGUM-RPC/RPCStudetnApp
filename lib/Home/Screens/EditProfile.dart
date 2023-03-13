@@ -28,8 +28,10 @@ class _EditProfileState extends ConsumerState<EditProfile> {
   @override
   void initState() {
     ref.read(editprofilecontroller).getID();
-    ref.read(P.notifier).showCourse();
+    ref.read(editprofilecontroller).showCourse();
+    ref.read(editprofilecontroller).displayCourse();
     super.initState();
+    ref.read(editprofilecontroller).displayCourse();
   }
 
   @override
@@ -37,7 +39,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     final obs1 = ref.watch(password);
     final obs = ref.watch(confirmpassword);
     final controller = ref.watch(editprofilecontroller);
-    final controller1 = ref.watch(P);
+
     return StreamBuilder<dynamic>(
         stream: controller.supabase
             .from("users")
@@ -253,9 +255,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                         const SizedBox(
                           height: 20,
                         ),
-                        StreamBuilder<dynamic>(
-                          
-                          builder: (context, snapshot) {
+                        StreamBuilder<dynamic>(builder: (context, snapshot) {
                           return Container(
                             decoration: const BoxDecoration(
                               borderRadius:
@@ -265,11 +265,16 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                             child: DropdownSearch<Course>(
                               dropdownBuilder: (context, selectedItem) {
                                 return Text(
-                                  selectedItem!.courseDepartment ??
-                                      "Search Course Department",
+                                  controller.course_department == null
+                                      ? "Search Department"
+                                      : selectedItem!.courseDepartment == null
+                                          ? controller.course_department
+                                              .toString()
+                                          : controller.course_department
+                                              .toString(),
                                   style: TextStyle(
                                       fontFamily: 'GeneralSansRegular',
-                                      fontSize: 15.sp,
+                                      fontSize: 13.sp,
                                       color: CtrlColors.black),
                                 );
                               },
@@ -310,8 +315,8 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                               )),
-                              selectedItem: controller1.course,
-                              items: controller1.listcourse,
+                              selectedItem: controller.course,
+                              items: controller.listcourse,
                               itemAsString: (item) => item.courseDepartment!,
                               popupProps: PopupProps.dialog(
                                 showSearchBox: true,
@@ -327,8 +332,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                       vertical: 12,
                                       horizontal: 14,
                                     ),
-                                    hintText:
-                                        "Course Deparment: (${snapshot.hasData == true ? snapshot.data[0]['passwordCopy'] : ""})",
+                                    hintText: "Course Deparment",
                                     hintStyle: TextStyle(
                                       color: CtrlColors.black,
                                       fontSize: 15.sp,
@@ -377,10 +381,10 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                 ),
                               ),
                               onChanged: (value) {
-                                controller1.selectedItem(value);
+                                controller.selectedItem(value);
                               },
                               validator: (value) {
-                                if (controller1.course == Course()) {
+                                if (controller.course == Course()) {
                                   return "Empty Course";
                                 } else {
                                   return null;
@@ -411,8 +415,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                     const TextStyle(color: CtrlColors.red),
                                 contentPadding:
                                     const EdgeInsets.symmetric(horizontal: 10),
-                                labelText:
-                                    "Password: (${snapshot.hasData == true ? snapshot.data[0]['passwordCopy'] : ""})",
+                                labelText: "Password",
                                 labelStyle: const TextStyle(
                                     fontFamily: "GeneralSansRegular",
                                     fontSize: 12,
@@ -523,14 +526,12 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                     backgroundColor: const Color(0xFFEC4969),
                                   ),
                                   onPressed: () async {
+                                    
                                     if (snapshot.hasData == true) {
                                       if (controller
                                           .confirmpassword.text.isNotEmpty) {
                                         if (controller.confirmpassword.text ==
-                                                controller.password.text ||
-                                            controller.confirmpassword.text ==
-                                                snapshot.data[0]
-                                                    ['passwordCopy']) {
+                                            controller.password.text) {
                                           controller.edit(
                                             context: context,
                                             firstName: snapshot.data[0]
@@ -541,8 +542,8 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                                 ['lastName'],
                                             mobileNumber: snapshot.data[0]
                                                 ['mobileNumber'],
-                                            passwordCopy: snapshot.data[0]
-                                                ['passwordCopy'],
+                                            birthDate: snapshot.data[0]
+                                                ['birth'],
                                           );
                                         } else {
                                           DialogPop.dialogup(

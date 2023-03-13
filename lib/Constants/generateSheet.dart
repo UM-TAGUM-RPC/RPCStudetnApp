@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:downloads_path_provider_28/downloads_path_provider_28.dart';
+import 'package:cr_file_saver/file_saver.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/widgets.dart';
@@ -13,8 +14,8 @@ class GenerateSheet {
     String? name,
     pw.Document? document,
   }) async {
-    final dir = await DownloadsPathProvider.downloadsDirectory;
-    final file = File("${dir!.path}/$name");
+    final dir = "/storage/emulated/0/Download";
+    final file = File("${dir}/$name");
     await file.create(recursive: true);
     final bytes = await document!.save();
     await file.writeAsBytes(bytes);

@@ -32,7 +32,10 @@ class NotifScreen extends ConsumerWidget {
                     height: 20,
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () async {
+                      await controller.supabase.from("notifications").update(
+                          {"status": "read"}).eq("to_id", controller.id);
+                    },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -59,16 +62,18 @@ class NotifScreen extends ConsumerWidget {
                           children: [
                             Container(
                               width: double.infinity,
-                              padding: const EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(4),
                               constraints: BoxConstraints(
                                 maxHeight: double.infinity,
                               ),
                               decoration: BoxDecoration(
-                                // border: isread[index] == false
-                                //     ? Border.all(
-                                //         color: CtrlColors.red,
-                                //         strokeAlign: StrokeAlign.center)
-                                //     : null,
+                                border:
+                                    snapshot.data[index]['status'] == "unread"
+                                        ? Border.all(
+                                            color: CtrlColors.red,
+                                            strokeAlign:
+                                                BorderSide.strokeAlignCenter)
+                                        : null,
                                 color: Color(0XFFF7F7F7),
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -125,41 +130,53 @@ class NotifScreen extends ConsumerWidget {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  SingleChildScrollView(
-                                    child: ReadMoreText(
-                                      snapshot.data![index]['message'],
-                                      trimLines: 2,
-                                      colorClickableText: CtrlColors.red,
-                                      trimMode: TrimMode.Line,
-                                      trimCollapsedText: '\n Read More',
-                                      trimExpandedText: 'Read Less',
-                                      lessStyle: TextStyle(
-                                          fontFamily: 'GeneralSans',
-                                          fontSize: 14,
-                                          color: CtrlColors.red),
-                                      moreStyle: TextStyle(
-                                          fontFamily: 'GeneralSans',
-                                          fontSize: 14,
-                                          color: CtrlColors.red),
+                                  Container(
+                                    padding: EdgeInsets.all(5),
+                                    child: SingleChildScrollView(
+                                      child: ReadMoreText(
+                                        snapshot.data![index]['message'],
+                                        trimLines: 2,
+                                        colorClickableText: CtrlColors.red,
+                                        trimMode: TrimMode.Line,
+                                        trimCollapsedText: '\n Read More',
+                                        trimExpandedText: 'Read Less',
+                                        lessStyle: TextStyle(
+                                            fontFamily: 'GeneralSans',
+                                            fontSize: 14,
+                                            color: CtrlColors.red),
+                                        moreStyle: TextStyle(
+                                            fontFamily: 'GeneralSans',
+                                            fontSize: 14,
+                                            color: CtrlColors.red),
+                                      ),
                                     ),
                                   ),
-                                  InkWell(
-                                    onTap: () {},
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Container(),
-                                        Text(
-                                          'Mark as read',
-                                          style: TextStyle(
-                                              fontFamily: 'GeneralSans',
-                                              color: CtrlColors.black,
-                                              fontSize: 16),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  snapshot.data![index]['status'] == "unread"
+                                      ? InkWell(
+                                          onTap: () async {
+                                            await controller.supabase
+                                                .from("notifications")
+                                                .update({"status": "read"}).eq(
+                                                    "id",
+                                                    snapshot.data![index]
+                                                        ['id']);
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(),
+                                              Text(
+                                                'Mark as read',
+                                                style: TextStyle(
+                                                    fontFamily: 'GeneralSans',
+                                                    color: CtrlColors.black,
+                                                    fontSize: 16),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      : Container(),
                                 ],
                               ),
                             ),

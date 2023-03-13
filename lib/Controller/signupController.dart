@@ -41,6 +41,7 @@ class SignUpPod extends ChangeNotifier {
       firstDate: DateTime(1970),
       lastDate: DateTime(2050),
     );
+    
     if (date != null) {
       birthdate.text = formatDate.format(date);
       notifyListeners();
