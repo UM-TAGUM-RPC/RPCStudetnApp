@@ -56,19 +56,20 @@ dependencies:
   pdf: ^3.9.0
   path_provider: ^2.0.13
   syncfusion_flutter_pdfviewer: ^20.4.53
-  printing: ^5.10.0
+  printing: ^5.10.1
   permission_handler: ^10.2.0
   # downloads_path_provider_28: ^0.1.2
   cr_file_saver: ^0.0.2+1
 
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.12.0
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.12.0"
+  
 
 flutter_icons:
-  android: true
+  android: "icon_app"
   ios: true
   image_path: "lib/assets/rpc.png"
   min_sdk_android: 21

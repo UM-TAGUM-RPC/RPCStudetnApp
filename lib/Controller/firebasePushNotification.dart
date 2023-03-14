@@ -8,15 +8,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
 import 'package:rpcstudentapp/Controller/sharedPref.dart';
 
-
-final firebaseMessagingProvider =Provider<FirebasePushNotif>((ref) => FirebasePushNotif());
+final firebaseMessagingProvider =
+    Provider<FirebasePushNotif>((ref) => FirebasePushNotif());
 
 class FirebasePushNotif {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   late AndroidNotificationChannel? channel;
   final AndroidInitializationSettings androidInitializationSettings =
-      const AndroidInitializationSettings('mipmap/logo_square');
+      const AndroidInitializationSettings('mipmap/icon_app');
 
   onInit() async {
     if (Platform.isAndroid) {
@@ -52,9 +52,7 @@ class FirebasePushNotif {
     );
     if (perm.authorizationStatus == AuthorizationStatus.authorized) {
     } else if (perm.authorizationStatus == AuthorizationStatus.provisional) {
-    } else {
-      
-    }
+    } else {}
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
@@ -85,7 +83,7 @@ class FirebasePushNotif {
               icon: "mipmap/logo_square",
               priority: Priority.high,
               importance: Importance.high,
-              color:  CtrlColors.red,
+              color: CtrlColors.red,
               enableVibration: true,
               playSound: true,
               //styleInformation:

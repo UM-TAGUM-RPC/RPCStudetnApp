@@ -9,7 +9,7 @@
    <application
         android:label="rpcstudentapp"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/icon_app">
         <activity
         
             android:name=".MainActivity"
@@ -28,12 +28,12 @@
                     
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
-                <action android:name="android.intent.action.VIEW" />
+                <!-- <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 
                 <data android:scheme="io.supabase.flutterquickstart" />
-                <data android:host="login-callback" />
+                <data android:host="login-callback" /> -->
                 
             </intent-filter>
         </activity>

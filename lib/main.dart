@@ -7,7 +7,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rpcstudentapp/Class/notif.dart';
 import 'package:rpcstudentapp/Constants/Routes.dart';
 import 'package:rpcstudentapp/Controller/firebasePushNotification.dart';
-import 'package:rpcstudentapp/Controller/homepageController.dart';
 import 'package:rpcstudentapp/Controller/sharedPref.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
