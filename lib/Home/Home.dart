@@ -331,7 +331,7 @@ class _HomeState extends ConsumerState<Home> {
                                 context: context,
                                 buttontext: "Yes",
                                 message: "Are you want to logout?",
-                                onpress: () {
+                                onpress: () async {
                                   prefs.remove("supabase_id");
                                   prefs.remove("code");
                                   // GoRouter.of(context).pop();

@@ -449,68 +449,68 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                           ),
                         ),
                         const SizedBox(
-                          height: 20,
+                          height: 35,
                         ),
-                        Container(
-                          // constraints: const BoxConstraints.tightFor(
-                          //   width: 160,
-                          // ),
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            color: Color(0xFFF7F7F7),
-                          ),
-                          child: TextFormField(
-                            controller: controller.confirmpassword,
-                            obscureText: obs,
-                            // validator: Validator.confirmPass(
-                            //   pass1: controller.password.text,
-                            //   pass: controller.confirmpassword.text
-                            // ),
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.auto,
-                                floatingLabelStyle:
-                                    const TextStyle(color: CtrlColors.red),
-                                contentPadding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                labelText: "Confirm Password",
-                                labelStyle: const TextStyle(
-                                    fontFamily: "GeneralSansRegular",
-                                    fontSize: 12,
-                                    color: Color(0xFF404042)),
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 20, right: 20),
-                                  child: SvgPicture.asset(
-                                    CtrlSvg.lock,
-                                    height: 18,
-                                    width: 18,
-                                  ),
-                                ),
-                                suffixIcon: InkWell(
-                                  onTap: () {
-                                    ref.read(confirmpassword.notifier).state =
-                                        !obs;
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, right: 20),
-                                    child: SvgPicture.asset(
-                                      CtrlSvg.notobscure,
-                                      height: 18,
-                                      width: 18,
-                                    ),
-                                  ),
-                                ),
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
+                        // Container(
+                        //   // constraints: const BoxConstraints.tightFor(
+                        //   //   width: 160,
+                        //   // ),
+                        //   decoration: const BoxDecoration(
+                        //     borderRadius: BorderRadius.all(Radius.circular(10)),
+                        //     color: Color(0xFFF7F7F7),
+                        //   ),
+                        //   child: TextFormField(
+                        //     controller: controller.confirmpassword,
+                        //     obscureText: obs,
+                        //     // validator: Validator.confirmPass(
+                        //     //   pass1: controller.password.text,
+                        //     //   pass: controller.confirmpassword.text
+                        //     // ),
+                        //     keyboardType: TextInputType.text,
+                        //     decoration: InputDecoration(
+                        //         floatingLabelBehavior:
+                        //             FloatingLabelBehavior.auto,
+                        //         floatingLabelStyle:
+                        //             const TextStyle(color: CtrlColors.red),
+                        //         contentPadding:
+                        //             const EdgeInsets.symmetric(horizontal: 10),
+                        //         labelText: "Confirm Password",
+                        //         labelStyle: const TextStyle(
+                        //             fontFamily: "GeneralSansRegular",
+                        //             fontSize: 12,
+                        //             color: Color(0xFF404042)),
+                        //         prefixIcon: Padding(
+                        //           padding: const EdgeInsets.only(
+                        //               left: 20, right: 20),
+                        //           child: SvgPicture.asset(
+                        //             CtrlSvg.lock,
+                        //             height: 18,
+                        //             width: 18,
+                        //           ),
+                        //         ),
+                        //         suffixIcon: InkWell(
+                        //           onTap: () {
+                        //             ref.read(confirmpassword.notifier).state =
+                        //                 !obs;
+                        //           },
+                        //           child: Padding(
+                        //             padding: const EdgeInsets.only(
+                        //                 left: 20, right: 20),
+                        //             child: SvgPicture.asset(
+                        //               CtrlSvg.notobscure,
+                        //               height: 18,
+                        //               width: 18,
+                        //             ),
+                        //           ),
+                        //         ),
+                        //         border: InputBorder.none,
+                        //         focusedBorder: InputBorder.none,
+                        //         enabledBorder: InputBorder.none),
+                        //   ),
+                        // ),
+                        // const SizedBox(
+                        //   height: 20,
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -526,12 +526,11 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                     backgroundColor: const Color(0xFFEC4969),
                                   ),
                                   onPressed: () async {
-                                    
                                     if (snapshot.hasData == true) {
-                                      if (controller
-                                          .confirmpassword.text.isNotEmpty) {
-                                        if (controller.confirmpassword.text ==
-                                            controller.password.text) {
+                                      if (controller.password.text.isNotEmpty) {
+                                        if (controller.password.text ==
+                                            snapshot.data[0]['passwordCopy']
+                                                .toString()) {
                                           controller.edit(
                                             context: context,
                                             firstName: snapshot.data[0]
@@ -549,7 +548,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                           DialogPop.dialogup(
                                               buttontext: "Close",
                                               context: context,
-                                              message: "Password Don't match",
+                                              message: "Password Incorrect",
                                               onpress: () {
                                                 GoRouter.of(context).pop();
                                               });
@@ -564,8 +563,6 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                               GoRouter.of(context).pop();
                                             });
                                       }
-                                    } else {
-                                      return;
                                     }
                                   },
                                   child: const Center(

@@ -34,46 +34,12 @@ getuser() async {
 final routerKey = Provider<GoRouter>((ref) {
   getuser();
   return GoRouter(
-    navigatorKey: supabaseid == null ? rootNavigator : shellNavigator,
+    navigatorKey: rootNavigator,
+    observers: [
+      GoRouterObserver(),
+    ],
     initialLocation: supabaseid == null ? '/login' : '/homepage',
-    redirect: (context, state) {
-      return null;
-    },
     routes: <RouteBase>[
-      GoRoute(
-        path: '/login',
-        name: StringRoutes.login,
-        builder: (context, state) {
-          return Login(key: state.pageKey);
-        },
-      ),
-      GoRoute(
-        name: StringRoutes.signup,
-        path: '/signup',
-        builder: (context, state) {
-          return Signup(
-            key: state.pageKey,
-          );
-        },
-      ),
-      GoRoute(
-        name: StringRoutes.profile,
-        path: '/profile',
-        builder: (context, state) {
-          return Profile(
-            key: state.pageKey,
-          );
-        },
-      ),
-
-      GoRoute(
-        name: StringRoutes.history,
-        path: '/history',
-        builder: (BuildContext context, GoRouterState state) {
-          return History(key: state.pageKey);
-        },
-      ),
-
       ShellRoute(
         navigatorKey: shellNavigator,
         builder: (context, state, child) {
@@ -81,6 +47,7 @@ final routerKey = Provider<GoRouter>((ref) {
         },
         routes: [
           GoRoute(
+            parentNavigatorKey: shellNavigator,
             name: StringRoutes.homepage,
             path: '/homepage',
             builder: (BuildContext context, GoRouterState state) {
@@ -90,6 +57,7 @@ final routerKey = Provider<GoRouter>((ref) {
             },
           ),
           GoRoute(
+            parentNavigatorKey: shellNavigator,
             name: StringRoutes.editprofile,
             path: '/editprofile',
             builder: (BuildContext context, GoRouterState state) {
@@ -99,6 +67,7 @@ final routerKey = Provider<GoRouter>((ref) {
             },
           ),
           GoRoute(
+            parentNavigatorKey: shellNavigator,
             name: StringRoutes.notification,
             path: '/notification',
             builder: (BuildContext context, GoRouterState state) {
@@ -109,22 +78,64 @@ final routerKey = Provider<GoRouter>((ref) {
           ),
         ],
       ),
-      // GoRoute(
-      //   name: StringRoutes.profile,
-      //   path: '/profile',
-      //   builder: (BuildContext context, GoRouterState state) {
-      //     return Profile(
-      //       key: state.pageKey,
-      //     );
-      //   },
-      // ),
-      // GoRoute(
-      //   name: StringRoutes.history,
-      //   path: '/history',
-      //   builder: (BuildContext context, GoRouterState state) {
-      //     return History(key: state.pageKey);
-      //   },
-      // )
+      GoRoute(
+        parentNavigatorKey: rootNavigator,
+        path: '/login',
+        name: StringRoutes.login,
+        builder: (context, state) {
+          return Login(key: state.pageKey);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigator,
+        name: StringRoutes.signup,
+        path: '/signup',
+        builder: (context, state) {
+          return Signup(
+            key: state.pageKey,
+          );
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigator,
+        name: StringRoutes.profile,
+        path: '/profile',
+        builder: (context, state) {
+          return Profile(
+            key: state.pageKey,
+          );
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigator,
+        name: StringRoutes.history,
+        path: '/history',
+        builder: (BuildContext context, GoRouterState state) {
+          return History(key: state.pageKey);
+        },
+      ),
     ],
   );
 });
+
+class GoRouterObserver extends NavigatorObserver {
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    print('MyTest didPush: $route');
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    print('MyTest didPop: $route');
+  }
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    print('MyTest didRemove: $route');
+  }
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    print('MyTest didReplace: $newRoute');
+  }
+}

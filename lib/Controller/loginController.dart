@@ -24,6 +24,11 @@ class LoginPod extends ChangeNotifier {
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
 
+  getuser() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.getString("supabase_id");
+  }
+
   login({context}) async {
     isfalse = true;
     notifyListeners();
