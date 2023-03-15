@@ -30,11 +30,10 @@ class LoginPod extends ChangeNotifier {
   }
 
   login({context}) async {
-    isfalse = true;
-    notifyListeners();
     final prefs = await SharedPreferences.getInstance();
     final res = await FirebaseMessaging.instance.getToken();
-
+    isfalse = true;
+    notifyListeners();
     showDialog(
         barrierDismissible: false,
         context: context,
@@ -71,11 +70,17 @@ class LoginPod extends ChangeNotifier {
           .signInWithPassword(email: email.text, password: password.text)
           .whenComplete(() {});
       prefs.setString("supabase_id", loginresponse.user!.id);
+      
+      await supabase.from("notification_token_device").insert({
+        "supabase_id": loginresponse.user!.id,
+        "user_id": prefs.getInt("id"),
+        "token_device": res,
+      });
       if (loginresponse.user!.id != "") {
         final userID = await supabase
             .from("users")
             .select()
-            .eq("supabase_id", prefs.getString("supabase_id"))
+            .eq("supabase_id", loginresponse.user!.id)
             .single();
         if (userID != "") {
           if (userID['role'] == "Student") {
@@ -108,13 +113,13 @@ class LoginPod extends ChangeNotifier {
             } else {
               log("Add user data");
               try {
-                await supabase.from("notification_token_device").insert({
-                  "supabase_id": prefs.getString("supabase_id"),
-                  "user_id": prefs.getInt("id"),
-                  "token_device": res,
-                }).whenComplete(() {
-                  GoRouter.of(context).goNamed(StringRoutes.homepage);
-                });
+                // await supabase.from("notification_token_device").insert({
+                //   "supabase_id": prefs.getString("supabase_id"),
+                //   "user_id": prefs.getInt("id"),
+                //   "token_device": res,
+                // }).whenComplete(() {
+                //   GoRouter.of(context).goNamed(StringRoutes.homepage);
+                // });
               } on PostgrestException catch (e) {
                 log(e.message, name: "From Notif");
               }
