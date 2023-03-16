@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +12,8 @@ import 'package:rpcstudentapp/Home/Screens/Homepage.dart';
 import 'package:rpcstudentapp/Home/Screens/Notifications.dart';
 import 'package:rpcstudentapp/Home/Screens/Profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Controller/auth_session.dart';
 
 class StringRoutes {
   static const String login = 'login';
@@ -32,14 +36,59 @@ getuser() async {
 }
 
 final routerKey = Provider<GoRouter>((ref) {
-  getuser();
+  // getuser();
   return GoRouter(
     navigatorKey: rootNavigator,
     observers: [
       GoRouterObserver(),
     ],
-    initialLocation: supabaseid == null ? '/login' : '/homepage',
+    debugLogDiagnostics: true,
+    initialLocation: '/login',
+    redirect: (context, state) async {
+      final prefs = await SharedPreferences.getInstance();
+      final supabaseids = prefs.getString("supabase_id");
+      final copy = ref.read(isDuplicate.notifier);
+      final auth = ref.read(sessionAuth);
+      final status = auth.statusAuth == StatusAuth.authenticated;
+      final signInP = state.subloc == "/login";
+      final signUnP = state.subloc == "/signup";
+      final homeP = state.subloc == "/homepage";
+
+      if (!status && signInP && !signUnP && supabaseids == "" ||
+          supabaseids == null) {
+        log("Come Here $supabaseids");
+        return "/login";
+      }
+      if (!copy.state &&
+          status &&
+          (!homeP || homeP) &&
+          supabaseids.isNotEmpty) {
+        log("Come Here $supabaseids");
+        copy.state = true;
+        return "/homepage";
+      }
+      return null;
+    },
+    refreshListenable: ref.read(sessionAuth),
     routes: <RouteBase>[
+      GoRoute(
+        parentNavigatorKey: rootNavigator,
+        path: '/login',
+        name: StringRoutes.login,
+        builder: (context, state) {
+          return Login(key: state.pageKey);
+        },
+      ),
+      GoRoute(
+        parentNavigatorKey: rootNavigator,
+        name: StringRoutes.signup,
+        path: '/signup',
+        builder: (context, state) {
+          return Signup(
+            key: state.pageKey,
+          );
+        },
+      ),
       ShellRoute(
         navigatorKey: shellNavigator,
         builder: (context, state, child) {
@@ -77,24 +126,6 @@ final routerKey = Provider<GoRouter>((ref) {
             },
           ),
         ],
-      ),
-      GoRoute(
-        parentNavigatorKey: rootNavigator,
-        path: '/login',
-        name: StringRoutes.login,
-        builder: (context, state) {
-          return Login(key: state.pageKey);
-        },
-      ),
-      GoRoute(
-        parentNavigatorKey: rootNavigator,
-        name: StringRoutes.signup,
-        path: '/signup',
-        builder: (context, state) {
-          return Signup(
-            key: state.pageKey,
-          );
-        },
       ),
       GoRoute(
         parentNavigatorKey: rootNavigator,

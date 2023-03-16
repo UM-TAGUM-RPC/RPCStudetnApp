@@ -1,16 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:rpcstudentapp/Auth/Signup.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
 import 'package:rpcstudentapp/Constants/Routes.dart';
 import 'package:rpcstudentapp/Constants/Validator.dart';
+import 'package:rpcstudentapp/Controller/auth_session.dart';
 import 'package:rpcstudentapp/Controller/loginController.dart';
 
 final obsecure = AutoDisposeStateProvider((ref) => true);
@@ -259,6 +257,15 @@ class _LoginState extends ConsumerState<Login> {
                                             true) {
                                           controller.login(
                                             context: context,
+                                            onSuccess: () {
+                                              try {
+                                                context.pop();
+                                              } finally {
+                                                ref
+                                                    .read(sessionAuth.notifier)
+                                                    .statusUserAunthenticated();
+                                              }
+                                            },
                                           );
                                         } else {
                                           return;

@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
-import 'package:rpcstudentapp/Constants/Routes.dart';
+import 'package:rpcstudentapp/Controller/auth_session.dart';
 import 'package:rpcstudentapp/Controller/homepageController.dart';
 import 'package:rpcstudentapp/Controller/profile.dart';
 import 'package:rpcstudentapp/Widgets/dialog.dart';
@@ -237,11 +237,14 @@ class _ProfileState extends ConsumerState<Profile> {
                                             buttontext: "Yes",
                                             message: "Are you want to logout?",
                                             onpress: () {
+                                              // GoRouter.of(context)
+                                              //     .goNamed(StringRoutes.login);
                                               prefs.remove("supabase_id");
                                               prefs.remove("code");
-                                              // GoRouter.of(context).pop();
-                                              GoRouter.of(context)
-                                                  .goNamed(StringRoutes.login);
+                                              context.pop();
+                                              ref
+                                                  .read(sessionAuth.notifier)
+                                                  .signOut();
                                             });
                                       },
                                       child: Row(

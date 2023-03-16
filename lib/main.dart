@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rpcstudentapp/Class/notif.dart';
 import 'package:rpcstudentapp/Constants/Routes.dart';
+import 'package:rpcstudentapp/Controller/auth_session.dart';
 import 'package:rpcstudentapp/Controller/firebasePushNotification.dart';
 import 'package:rpcstudentapp/Controller/sharedPref.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,6 +32,8 @@ Future<void> messagehandling(RemoteMessage? message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await SharedPrefs.init();
   await Supabase.initialize(
     url: "https://miojbztjrzdmwdyzhdoy.supabase.co",
     anonKey:
@@ -41,8 +44,6 @@ void main() async {
   NotificationServices().initNotification();
   runApp(const ProviderScope(child: MyApp()));
 
-  await Firebase.initializeApp();
-  await SharedPrefs.init();
   final prefs = await SharedPreferences.getInstance();
   prefs.getString("supabase_id");
   FirebaseMessaging.onBackgroundMessage(messagehandling);
@@ -63,6 +64,7 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
     ref.read(firebaseMessagingProvider).onInit();
+    ref.read(sessionAuth.notifier).statusUserAunthenticated();
     super.initState();
   }
 

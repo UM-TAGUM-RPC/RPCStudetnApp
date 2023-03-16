@@ -7,12 +7,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
 import 'package:rpcstudentapp/Constants/Routes.dart';
+import 'package:rpcstudentapp/Controller/auth_session.dart';
 import 'package:rpcstudentapp/Controller/homepageController.dart';
 import 'package:rpcstudentapp/Widgets/BottomBarIndicator.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:rpcstudentapp/Widgets/dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 final index = AutoDisposeStateProvider<int>((ref) => 0);
 
@@ -326,18 +326,31 @@ class _HomeState extends ConsumerState<Home> {
                         20.verticalSpace,
                         InkWell(
                           onTap: () async {
-                            final prefs = await SharedPreferences.getInstance();
-                            DialogPop.dialogup(
-                                context: context,
-                                buttontext: "Yes",
-                                message: "Are you want to logout?",
-                                onpress: () async {
-                                  prefs.remove("supabase_id");
-                                  prefs.remove("code");
-                                  // GoRouter.of(context).pop();
-                                  GoRouter.of(context)
-                                      .goNamed(StringRoutes.login);
-                                });
+                            try {
+                              scaffoldKey.currentState!.closeDrawer();
+                            } finally {
+                              final prefs =
+                                  await SharedPreferences.getInstance();
+                              DialogPop.dialogup(
+                                  context: context,
+                                  buttontext: "Yes",
+                                  message: "Are you want to logout?",
+                                  onpress: () async {
+                                    await prefs.remove("supabase_id");
+                                    await prefs.remove("code");
+                                    // GoRouter.of(context).pop();
+                                    // GoRouter.of(context)
+                                    //     .goNamed(StringRoutes.login);
+                                    try {
+                                      context.pop();
+                                    } finally {
+                                      ref.read(sessionAuth.notifier).signOut();
+                                      ref
+                                          .read(sessionAuth.notifier)
+                                          .statusUserAunthenticated();
+                                    }
+                                  });
+                            }
                           },
                           child: Padding(
                             padding: const EdgeInsets.only(top: 10, right: 60),
