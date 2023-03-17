@@ -30,6 +30,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     ref.read(homepagecontroller.notifier).getCode();
     super.initState();
     tz.initializeTimeZones();
+   
   }
 
   @override

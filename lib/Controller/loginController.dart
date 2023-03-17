@@ -52,14 +52,6 @@ class LoginPod extends ChangeNotifier {
           );
         });
     try {
-      // await supabase
-      //     .from("users")
-      //     .select()
-      //     .eq("email", email.text)
-      //     .single()
-      //     .whenComplete(() async {
-
-      // });
       final loginresponse = await supabase.auth
           .signInWithPassword(email: email.text, password: password.text)
           .whenComplete(() {});
@@ -75,32 +67,42 @@ class LoginPod extends ChangeNotifier {
         if (userID != "") {
           if (userID["role"] == "Student") {
             prefs.setInt("id", userID['id']);
-            onSuccess!();
-            // final Map<String, dynamic> result = await supabase
-            //     .from("notification_token_device")
-            //     .select()
-            //     .eq("supabase_id", userID['supabase_id'])
-            //     .single();
 
-            // if (result != "" || result != {}) {
-            //   if (result["token_device"] == res) {
-            //     if (!isfalse) return;
+            final Map<String, dynamic> getToken = await supabase
+                .from("users")
+                .select()
+                .eq("supabase_id", loginresponse.user!.id)
+                .single();
 
-            //     // await supabase.from("notification_token_device").update({
-            //     //   "token_device": res,
-            //     // }).eq("supabase_id", userID['supabase_id']);
-
-            //   } else {
-            //     // await supabase.from("notification_token_device").insert({
-            //     //   "supabase_id": loginresponse.user!.id,
-            //     //   "user_id": userID['id'],
-            //     //   "token_device": res,
-            //     // });
-            //   }
-            // } else {
-            //   GoRouter.of(context).pop();
-
-            // }
+            if (getToken != "" || getToken != {}) {
+              if (getToken["token_device"] == res) {
+                await supabase
+                    .from("notification_token_device")
+                    .update({
+                      "token_device": res,
+                    })
+                    .eq("supabase_id", userID['supabase_id'])
+                    .whenComplete(() {
+                      onSuccess!();
+                    });
+              } else {
+                await supabase.from("notification_token_device").insert({
+                  "supabase_id": prefs.getString("supabase_id"),
+                  "user_id": prefs.getInt("id"),
+                  "token_device": res,
+                }).whenComplete(() {
+                  onSuccess!();
+                });
+              }
+            } else {
+              await supabase.from("notification_token_device").insert({
+                "supabase_id": prefs.getString("supabase_id"),
+                "user_id": prefs.getInt("id"),
+                "token_device": res,
+              }).whenComplete(() {
+                onSuccess!();
+              });
+            }
           } else {
             GoRouter.of(context).pop();
             DialogPop.dialogup(
@@ -112,63 +114,6 @@ class LoginPod extends ChangeNotifier {
                 });
           }
         }
-
-        // if (userID != "") {
-        //   if (userID['role'] == "Student") {
-
-        //     if (result != null) {
-        //       if (result["token_device"] == res) {
-        //         if (!isfalse) return;
-        //         onSuccess!();
-        //         // GoRouter.of(context).pop();
-        //         // GoRouter.of(context).goNamed(StringRoutes.homepage);
-        //         log("No Changes from notif token");
-        //       } else {
-        //         log("Update token");
-        //         await supabase
-        //             .from("notification_token_device")
-        //             .update({
-        //               "token_device": res,
-        //             })
-        //             .eq("supabase_id", prefs.getString("supabase_id"))
-        //             .whenComplete(() {
-        //               if (!isfalse) return;
-        //               onSuccess!();
-        //               // GoRouter.of(context).pop();
-        //               // GoRouter.of(context).goNamed(StringRoutes.homepage);
-        //             });
-        //       }
-        //     } else {
-        //       log("Add user data");
-
-        //       await supabase.from("notification_token_device").insert({
-        //         "supabase_id": loginresponse.user!.id,
-        //         "user_id": prefs.getInt("id"),
-        //         "token_device": res,
-        //       });
-        //       try {
-        //         // await supabase.from("notification_token_device").insert({
-        //         //   "supabase_id": prefs.getString("supabase_id"),
-        //         //   "user_id": prefs.getInt("id"),
-        //         //   "token_device": res,
-        //         // }).whenComplete(() {
-        //         //   GoRouter.of(context).goNamed(StringRoutes.homepage);
-        //         // });
-        //       } on PostgrestException catch (e) {
-        //         log(e.message, name: "From Notif");
-        //       }
-        //     }
-        //   } else {
-        //     GoRouter.of(context).pop();
-        //     DialogPop.dialogup(
-        //         context: context,
-        //         buttontext: "Close",
-        //         message: "User Account is not a Student",
-        //         onpress: () {
-        //           GoRouter.of(context).pop();
-        //         });
-        //   }
-        // }
       }
     } on AuthException {
       GoRouter.of(context).pop();
@@ -179,6 +124,12 @@ class LoginPod extends ChangeNotifier {
           onpress: () {
             GoRouter.of(context).pop();
           });
+    } on PostgrestException {
+      // await supabase.from("notification_token_device").insert({
+      //   "supabase_id": prefs.getString("supabase_id"),
+      //   "user_id": prefs.getInt("id"),
+      //   "token_device": res,
+      // });
     }
   }
 }
