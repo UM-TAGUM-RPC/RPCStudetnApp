@@ -30,7 +30,6 @@ class _HomePageState extends ConsumerState<HomePage> {
     ref.read(homepagecontroller.notifier).getCode();
     super.initState();
     tz.initializeTimeZones();
-   
   }
 
   @override
@@ -265,47 +264,62 @@ class _HomePageState extends ConsumerState<HomePage> {
                                           ),
                                         ],
                                       ),
-                                      Text(
-                                        controller
-                                            .statuses(
-                                              approve_title:
-                                                  snapshot.data![index]
-                                                      ['approve_title'],
-                                              outline_proposal:
-                                                  snapshot.data![index]
-                                                      ['outline_proposal'],
-                                              outline_defense:
-                                                  snapshot.data![index]
-                                                      ['outline_defense'],
-                                              data_gather: snapshot.data![index]
-                                                  ['data_gathering'],
-                                              manuscript: snapshot.data![index]
-                                                  ['manuscript'],
-                                              final_oral_prep:
-                                                  snapshot.data![index]
-                                                      ['final_oral_prep'],
-                                              routing: snapshot.data![index]
-                                                  ['routing'],
-                                              plagiarism: snapshot.data![index]
-                                                  ['plagiarism'],
-                                              approval: snapshot.data![index]
-                                                  ['approval'],
-                                              final_output: snapshot
-                                                  .data![index]['final_output'],
-                                              subject_teacher:
-                                                  snapshot.data![index]
-                                                      ['subject_teacher'],
-                                              research_coordinator:
-                                                  snapshot.data![index]
-                                                      ['research_coordinator'],
-                                            )
-                                            .toString(),
-                                        style: TextStyle(
-                                          color: CtrlColors.red,
-                                          fontFamily: "GeneralSans",
-                                          fontSize: 12,
+                                      SizedBox(
+                                        height: 30,
+                                        width: 150,
+                                        child: ListView(
+                                          shrinkWrap: true,
+                                          children: [
+                                            Text(
+                                              controller
+                                                  .statuses(
+                                                    approve_title:
+                                                        snapshot.data![index]
+                                                            ['approve_title'],
+                                                    outline_proposal: snapshot
+                                                            .data![index]
+                                                        ['outline_proposal'],
+                                                    outline_defense:
+                                                        snapshot.data![index]
+                                                            ['outline_defense'],
+                                                    data_gather:
+                                                        snapshot.data![index]
+                                                            ['data_gathering'],
+                                                    manuscript:
+                                                        snapshot.data![index]
+                                                            ['manuscript'],
+                                                    final_oral_prep:
+                                                        snapshot.data![index]
+                                                            ['final_oral_prep'],
+                                                    routing:
+                                                        snapshot.data![index]
+                                                            ['routing'],
+                                                    plagiarism:
+                                                        snapshot.data![index]
+                                                            ['plagiarism'],
+                                                    approval:
+                                                        snapshot.data![index]
+                                                            ['approval'],
+                                                    final_output:
+                                                        snapshot.data![index]
+                                                            ['final_output'],
+                                                    subject_teacher:
+                                                        snapshot.data![index]
+                                                            ['subject_teacher'],
+                                                    research_coordinator: snapshot
+                                                            .data![index][
+                                                        'research_coordinator'],
+                                                  )
+                                                  .toString(),
+                                              style: TextStyle(
+                                                color: CtrlColors.red,
+                                                fontFamily: "GeneralSans",
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                      ),
+                                      )
                                     ],
                                   ),
                                 ],

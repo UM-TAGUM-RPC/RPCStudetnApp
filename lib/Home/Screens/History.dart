@@ -87,7 +87,13 @@ class _HistoryState extends ConsumerState<History> {
                                     // ignore: prefer_const_literals_to_create_immutables
                                     children: [
                                       StreamBuilder<dynamic>(
-                                          stream: controller.supabase .from("users").stream(primaryKey: ['id']).eq("supabase_id",snapshot.data![0]['id_adivsor']['advisor_id']),
+                                          stream: controller.supabase
+                                              .from("users")
+                                              .stream(primaryKey: ['id']).eq(
+                                                  "supabase_id",
+                                                  snapshot.data![0]
+                                                          ['id_adivsor']
+                                                      ['advisor_id']),
                                           builder: (context, es) {
                                             if (es.hasData == null &&
                                                 es.connectionState ==
@@ -168,49 +174,60 @@ class _HistoryState extends ConsumerState<History> {
                                               ),
                                             ],
                                           ),
-                                          Text(
-                                            controller
-                                                .statuses(
-                                                  approve_title:
-                                                      snapshot.data![index]
-                                                          ['approve_title'],
-                                                  outline_proposal:
-                                                      snapshot.data![index]
-                                                          ['outline_proposal'],
-                                                  outline_defense:
-                                                      snapshot.data![index]
-                                                          ['outline_defense'],
-                                                  data_gather:
-                                                      snapshot.data![index]
-                                                          ['data_gathering'],
-                                                  manuscript:
-                                                      snapshot.data![index]
-                                                          ['manuscript'],
-                                                  final_oral_prep:
-                                                      snapshot.data![index]
-                                                          ['final_oral_prep'],
-                                                  routing: snapshot.data![index]
-                                                      ['routing'],
-                                                  plagiarism:
-                                                      snapshot.data![index]
-                                                          ['plagiarism'],
-                                                  approval: snapshot
-                                                      .data![index]['approval'],
-                                                  final_output:
-                                                      snapshot.data![index]
-                                                          ['final_output'],
-                                                  subject_teacher:
-                                                      snapshot.data![index]
-                                                          ['subject_teacher'],
-                                                  research_coordinator: snapshot
-                                                          .data![index]
-                                                      ['research_coordinator'],
+                                          SizedBox(
+                                            height: 30,
+                                            width: 150,
+                                            child: ListView(
+                                              children: [
+                                                Text(
+                                                  controller
+                                                      .statuses(
+                                                        approve_title: snapshot
+                                                                .data![index]
+                                                            ['approve_title'],
+                                                        outline_proposal: snapshot
+                                                                .data![index][
+                                                            'outline_proposal'],
+                                                        outline_defense: snapshot
+                                                                .data![index]
+                                                            ['outline_defense'],
+                                                        data_gather: snapshot
+                                                                .data![index]
+                                                            ['data_gathering'],
+                                                        manuscript: snapshot
+                                                                .data![index]
+                                                            ['manuscript'],
+                                                        final_oral_prep: snapshot
+                                                                .data![index]
+                                                            ['final_oral_prep'],
+                                                        routing: snapshot
+                                                                .data![index]
+                                                            ['routing'],
+                                                        plagiarism: snapshot
+                                                                .data![index]
+                                                            ['plagiarism'],
+                                                        approval: snapshot
+                                                                .data![index]
+                                                            ['approval'],
+                                                        final_output: snapshot
+                                                                .data![index]
+                                                            ['final_output'],
+                                                        subject_teacher: snapshot
+                                                                .data![index]
+                                                            ['subject_teacher'],
+                                                        research_coordinator:
+                                                            snapshot.data![
+                                                                    index][
+                                                                'research_coordinator'],
+                                                      )
+                                                      .toString(),
+                                                  style: const TextStyle(
+                                                    color: CtrlColors.red,
+                                                    fontFamily: "GeneralSans",
+                                                    fontSize: 12,
+                                                  ),
                                                 )
-                                                .toString(),
-                                            style: const TextStyle(
-                                              color: CtrlColors.red,
-                                              fontFamily: "GeneralSans",
-                                              fontSize: 12,
+                                              ],
                                             ),
                                           ),
                                         ],
@@ -277,9 +294,10 @@ class _HistoryState extends ConsumerState<History> {
                             HistoryCard(
                                 // ignore: prefer_if_null_operators
                                 date: snapshot.data![index]
-                                            ['data_gather_date'] !=
+                                            ['data_gathering_date'] !=
                                         null
-                                    ? snapshot.data![index]['data_gather_date']
+                                    ? snapshot.data![index]
+                                        ['data_gathering_date']
                                     : "Pending",
                                 status: snapshot.data![index]['data_gathering'],
                                 statusname: "Data Gathering"),

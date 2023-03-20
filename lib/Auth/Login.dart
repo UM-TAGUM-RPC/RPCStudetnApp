@@ -261,9 +261,8 @@ class _LoginState extends ConsumerState<Login> {
                                               try {
                                                 context.pop();
                                               } finally {
-                                                ref
-                                                    .read(sessionAuth.notifier)
-                                                    .statusUserAunthenticated();
+                                                 GoRouter.of(context).push("/homepage");
+                                                ref.read(sessionAuth.notifier).statusUserAunthenticated();
                                               }
                                             },
                                           );

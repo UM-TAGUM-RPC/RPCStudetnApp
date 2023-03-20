@@ -355,26 +355,6 @@ class GenerateSheet {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: generalSans(
-                      label: manuscript,
-                      align: TextAlign.center,
-                      fontSize: 7.sp,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  vertical: 2,
-                  horizontal: 2,
-                ),
-                child: SizedBox(
-                  height: 11,
-                  width: null,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: generalSans(
                       label: data_gather,
                       align: TextAlign.center,
                       fontSize: 7.sp,
