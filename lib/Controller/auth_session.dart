@@ -26,14 +26,14 @@ class AuthSession extends ChangeNotifier {
       } else {
         state = StatusAuth.unauthenticated;
         notifyListeners();
-        // if (data.session != null) {
-        //   log(data.session!.user.email!, name: "EMAIL");
-        //   state = StatusAuth.authenticated;
-        //   notifyListeners();
-        // } else {
-        //   state = StatusAuth.unauthenticated;
-        //   notifyListeners();
-        // }
+        if (data.session != null) {
+          log(data.session!.user.email!, name: "EMAIL");
+          state = StatusAuth.authenticated;
+          notifyListeners();
+        } else {
+          state = StatusAuth.unauthenticated;
+          notifyListeners();
+        }
       }
     });
   }
@@ -41,8 +41,9 @@ class AuthSession extends ChangeNotifier {
   void signOut() async {
     state = StatusAuth.unauthenticated;
     log(state.toString(), name: "AUTH STATE");
-
-    //GoRouter.of(context!).goNamed(r.signIn);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove("supabase_id");
+    await prefs.remove("code");
     supabaseService.auth.signOut();
     notifyListeners();
   }

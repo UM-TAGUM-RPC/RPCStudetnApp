@@ -43,7 +43,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   NotificationServices().initNotification();
   runApp(const ProviderScope(child: MyApp()));
-
   final prefs = await SharedPreferences.getInstance();
   prefs.getString("supabase_id");
   FirebaseMessaging.onBackgroundMessage(messagehandling);
@@ -63,7 +62,6 @@ class MyApp extends ConsumerStatefulWidget {
 class _MyAppState extends ConsumerState<MyApp> {
   @override
   void initState() {
-    ref.read(firebaseMessagingProvider).onInit();
     ref.read(sessionAuth.notifier).statusUserAunthenticated();
     super.initState();
   }

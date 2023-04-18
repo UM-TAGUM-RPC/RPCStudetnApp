@@ -228,42 +228,40 @@ class _ProfileState extends ConsumerState<Profile> {
                                           fontSize: 13.sp),
                                     ),
                                     40.verticalSpace,
-                                    InkWell(
-                                      onTap: () async {
-                                        final prefs = await SharedPreferences
-                                            .getInstance();
-                                        DialogPop.dialogup(
-                                            context: context,
-                                            buttontext: "Yes",
-                                            message: "Are you want to logout?",
-                                            onpress: () {
-                                              // GoRouter.of(context)
-                                              //     .goNamed(StringRoutes.login);
-                                              prefs.remove("supabase_id");
-                                              prefs.remove("code");
-                                              context.pop();
-                                              ref
-                                                  .read(sessionAuth.notifier)
-                                                  .signOut();
-                                            });
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          SvgPicture.asset(CtrlSvg.logout),
-                                          10.horizontalSpace,
-                                          const Text(
-                                            'LOG OUT',
-                                            style: TextStyle(
-                                                fontFamily:
-                                                    'GeneralSansRegular',
-                                                color: CtrlColors.black,
-                                                fontSize: 15),
-                                          ),
-                                        ],
-                                      ),
-                                    )
+                                    // InkWell(
+                                    //   onTap: () async {
+                                    //     final prefs = await SharedPreferences
+                                    //         .getInstance();
+                                    //     DialogPop.dialogup(
+                                    //         context: context,
+                                    //         buttontext: "Yes",
+                                    //         message: "Are you want to logout?",
+                                    //         onpress: () {
+                                    //           prefs.remove("supabase_id");
+                                    //           prefs.remove("code");
+                                    //           context.pop();
+                                    //           ref
+                                    //               .read(sessionAuth.notifier)
+                                    //               .signOut();
+                                    //         });
+                                    //   },
+                                    //   child: Row(
+                                    //     mainAxisAlignment:
+                                    //         MainAxisAlignment.start,
+                                    //     children: [
+                                    //       SvgPicture.asset(CtrlSvg.logout),
+                                    //       10.horizontalSpace,
+                                    //       const Text(
+                                    //         'LOG OUT',
+                                    //         style: TextStyle(
+                                    //             fontFamily:
+                                    //                 'GeneralSansRegular',
+                                    //             color: CtrlColors.black,
+                                    //             fontSize: 15),
+                                    //       ),
+                                    //     ],
+                                    //   ),
+                                    // )
                                   ],
                                 ),
                               ),

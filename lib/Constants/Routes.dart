@@ -39,9 +39,6 @@ final routerKey = Provider<GoRouter>((ref) {
   // getuser();
   return GoRouter(
     navigatorKey: rootNavigator,
-    observers: [
-      GoRouterObserver(),
-    ],
     debugLogDiagnostics: true,
     initialLocation: '/login',
     redirect: (context, state) async {
@@ -54,16 +51,12 @@ final routerKey = Provider<GoRouter>((ref) {
       final signUnP = state.subloc == "/signup";
       final homeP = state.subloc == "/homepage";
 
-      if (!status && signInP && !signUnP && supabaseids == "" ||
+      if (!status && signInP && supabaseids == null && supabaseids == "" ||
           supabaseids == null) {
-        log("Come Here $supabaseids");
         return "/login";
       }
-      if (!copy.state &&
-          status &&
-          (!homeP || homeP) &&
-          supabaseids.isNotEmpty) {
-        log("Come Here $supabaseids");
+
+      if (!copy.state &&status &&(!homeP || homeP) &&supabaseids.isNotEmpty) {
         copy.state = true;
         return "/homepage";
       }
@@ -148,25 +141,3 @@ final routerKey = Provider<GoRouter>((ref) {
     ],
   );
 });
-
-class GoRouterObserver extends NavigatorObserver {
-  @override
-  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    print('Page didPush: $route');
-  }
-
-  @override
-  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    print('Page didPush: $route');
-  }
-
-  @override
-  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
-    print('Page didPush: $route');
-  }
-
-  @override
-  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
-    print('Page didPush: $newRoute');
-  }
-}

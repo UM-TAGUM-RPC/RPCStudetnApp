@@ -14,7 +14,6 @@ import '../Constants/Constants.dart';
 
 final password = AutoDisposeStateProvider((ref) => true);
 final confirmpassword = AutoDisposeStateProvider((ref) => false);
-final GlobalKey<FormState> signupKey = GlobalKey<FormState>();
 
 class Signup extends ConsumerStatefulWidget {
   const Signup({super.key});
@@ -23,6 +22,7 @@ class Signup extends ConsumerStatefulWidget {
 }
 
 class _SignupState extends ConsumerState<Signup> {
+  final GlobalKey<FormState> signupKey = GlobalKey<FormState>();
   @override
   void initState() {
     ref.read(P.notifier).showCourse();
@@ -56,7 +56,7 @@ class _SignupState extends ConsumerState<Signup> {
                       children: [
                         InkWell(
                             onTap: () {
-                              GoRouter.of(context).go("/login");
+                              GoRouter.of(context).pop();
                             },
                             child: SvgPicture.asset(CtrlSvg.back)),
                         10.horizontalSpace,

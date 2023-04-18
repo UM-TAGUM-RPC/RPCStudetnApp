@@ -5,14 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:rpcstudentapp/Auth/Signup.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
 import 'package:rpcstudentapp/Constants/Routes.dart';
 import 'package:rpcstudentapp/Constants/Validator.dart';
 import 'package:rpcstudentapp/Controller/auth_session.dart';
 import 'package:rpcstudentapp/Controller/loginController.dart';
+import 'package:rpcstudentapp/Home/Home.dart';
 
 final obsecure = AutoDisposeStateProvider((ref) => true);
-final GlobalKey<FormState> loginkey = GlobalKey<FormState>();
 
 class Login extends ConsumerStatefulWidget {
   const Login({super.key});
@@ -21,6 +22,7 @@ class Login extends ConsumerStatefulWidget {
 }
 
 class _LoginState extends ConsumerState<Login> {
+  final GlobalKey<FormState> loginkey = GlobalKey<FormState>();
   @override
   void initState() {
     super.initState();
@@ -257,14 +259,7 @@ class _LoginState extends ConsumerState<Login> {
                                             true) {
                                           controller.login(
                                             context: context,
-                                            onSuccess: () {
-                                              try {
-                                                context.pop();
-                                              } finally {
-                                                 GoRouter.of(context).push("/homepage");
-                                                ref.read(sessionAuth.notifier).statusUserAunthenticated();
-                                              }
-                                            },
+                                            
                                           );
                                         } else {
                                           return;
@@ -310,8 +305,11 @@ class _LoginState extends ConsumerState<Login> {
                                     ),
                                   ),
                                   onTap: () {
-                                    GoRouter.of(context)
-                                        .goNamed(StringRoutes.signup);
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const Signup()));
                                   },
                                 )
                               ],

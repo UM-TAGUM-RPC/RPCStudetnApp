@@ -23,7 +23,7 @@ class LoginPod extends ChangeNotifier {
     prefs.getString("supabase_id");
   }
 
-  login({context, Function()? onSuccess}) async {
+  login({context}) async {
     final prefs = await SharedPreferences.getInstance();
     final res = await FirebaseMessaging.instance.getToken();
     isfalse = true;
@@ -67,42 +67,28 @@ class LoginPod extends ChangeNotifier {
         if (userID != "") {
           if (userID["role"] == "Student") {
             prefs.setInt("id", userID['id']);
+            print(userID['role']);
+            GoRouter.of(context).pop();
+            GoRouter.of(context).go("/homepage");
 
-            final Map<String, dynamic> getToken = await supabase
-                .from("users")
-                .select()
-                .eq("supabase_id", loginresponse.user!.id)
-                .single();
+            // final Map<String, dynamic> getToken = await supabase
+            //     .from("users")
+            //     .select()
+            //     .eq("supabase_id", loginresponse.user!.id)
+            //     .single();
 
-            if (getToken != "" || getToken != {}) {
-              if (getToken["token_device"] == res) {
-                await supabase
-                    .from("notification_token_device")
-                    .update({
-                      "token_device": res,
-                    })
-                    .eq("supabase_id", userID['supabase_id'])
-                    .whenComplete(() {
-                      onSuccess!();
-                    });
-              } else {
-                await supabase.from("notification_token_device").insert({
-                  "supabase_id": prefs.getString("supabase_id"),
-                  "user_id": prefs.getInt("id"),
-                  "token_device": res,
-                }).whenComplete(() {
-                  onSuccess!();
-                });
-              }
-            } else {
-              await supabase.from("notification_token_device").insert({
-                "supabase_id": prefs.getString("supabase_id"),
-                "user_id": prefs.getInt("id"),
-                "token_device": res,
-              }).whenComplete(() {
-                onSuccess!();
-              });
-            }
+            //     if (getToken["token_device"] == res) {
+            //     await supabase
+            //         .from("notification_token_device")
+            //         .update({
+            //           "token_device": res,
+            //         })
+            //         .eq("supabase_id", userID['supabase_id'])
+            //         .whenComplete(() {
+            //           GoRouter.of(context).push("/homepage");
+            //           onSuccess!();
+            //         });
+            //   }
           } else {
             GoRouter.of(context).pop();
             DialogPop.dialogup(
@@ -125,11 +111,11 @@ class LoginPod extends ChangeNotifier {
             GoRouter.of(context).pop();
           });
     } on PostgrestException {
-      // await supabase.from("notification_token_device").insert({
-      //   "supabase_id": prefs.getString("supabase_id"),
-      //   "user_id": prefs.getInt("id"),
-      //   "token_device": res,
-      // });
+      await supabase.from("notification_token_device").insert({
+        "supabase_id": prefs.getString("supabase_id"),
+        "user_id": prefs.getInt("id"),
+        "token_device": res,
+      });
     }
   }
 }

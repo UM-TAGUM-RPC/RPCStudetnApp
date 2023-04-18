@@ -415,13 +415,13 @@ class _HomeState extends ConsumerState<Home> {
     ref.read(index.notifier).state = i!;
     switch (i) {
       case 0:
-        context.goNamed(StringRoutes.homepage);
+        context.push("/homepage");
         break;
       case 1:
-        context.goNamed(StringRoutes.editprofile);
+        context.push("/editprofile");
         break;
       case 2:
-        context.goNamed(StringRoutes.notification);
+        context.push("/notification");
         break;
       default:
     }
