@@ -63,9 +63,11 @@ class _HistoryState extends ConsumerState<History> {
             body: Padding(
               padding: const EdgeInsets.only(left: 30, right: 30, top: 30),
               child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
                 child: SizedBox(
-                  height: 700,
                   child: ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
                       itemCount: snapshot.data?.length ?? 0,
                       itemBuilder: (context, index) {
                         return Column(

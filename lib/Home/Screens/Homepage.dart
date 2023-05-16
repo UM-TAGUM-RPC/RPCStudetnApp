@@ -28,8 +28,15 @@ class _HomePageState extends ConsumerState<HomePage> {
   void initState() {
     ref.read(homepagecontroller.notifier).getUser();
     ref.read(homepagecontroller.notifier).getCode();
+    requestPermission();
     super.initState();
+    requestPermission();
     tz.initializeTimeZones();
+  }
+
+  Future<void> requestPermission() async {
+    Permission? permission;
+    await permission!.request();
   }
 
   @override

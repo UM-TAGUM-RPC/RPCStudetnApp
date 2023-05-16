@@ -76,53 +76,52 @@ class HomePagePod extends ChangeNotifier {
       plagiarism,
       approval,
       final_output}) async {
-    // var statusGrant = await Permission.storage.status;
+    var statusGrant = await Permission.storage.status;
 
     if (await Permission.storage.request().isGranted) {
-      List<String> names = <String>[];
-      final advisor_data =
-          await supabase.from("users").select().eq("supabase_id", advisor_id);
-      final student_id =
-          await supabase.from("monitoring_sheet").select().eq("z_code", code);
+    List<String> names = <String>[];
+    final advisor_data =
+        await supabase.from("users").select().eq("supabase_id", advisor_id);
+    final student_id =
+        await supabase.from("monitoring_sheet").select().eq("z_code", code);
 
-      for (int x = 0;
-          x < student_id.first["id_student"]["students_id"].length;
-          x++) {
-        final student_data = await supabase.from("users").select().eq(
-            "supabase_id",
-            student_id.first["id_student"]["students_id"][x]['id_student']);
+    for (int x = 0;
+        x < student_id.first["id_student"]["students_id"].length;
+        x++) {
+      final student_data = await supabase.from("users").select().eq(
+          "supabase_id",
+          student_id.first["id_student"]["students_id"][x]['id_student']);
+      names.add(
+          "${student_data.first["firstName"]} ${student_data.first["lastName"]}");
+    }
 
-        names.add(
-            "${student_data.first["firstName"]} ${student_data.first["lastName"]}");
-      }
-
-      String newPath = "Monitor Sheet.pdf";
-      GenerateSheet.generateSheettoPdf(
-          name: newPath,
-          names: names,
-          approve_title: approve_title,
-          outline_proposal: outline_proposal,
-          outline_defense: outline_defense,
-          data_gather: data_gather,
-          manuscript: manuscript,
-          final_oral_prep: final_oral_prep,
-          routing: routing,
-          plagiarism: plagiarism,
-          approval: approval,
-          final_output: final_output,
-          advisorname:
-              "${advisor_data.first["firstName"]} ${advisor_data.first["lastName"]}");
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          behavior: SnackBarBehavior.floating,
-          dismissDirection: DismissDirection.endToStart,
-          backgroundColor: CtrlColors.red,
-          content: Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text(
-              "Download Succesfully",
-              style: TextStyle(color: Colors.white),
-            ),
-          )));
+    String newPath = "Monitor Sheet.pdf";
+    GenerateSheet.generateSheettoPdf(
+        name: newPath,
+        names: names,
+        approve_title: approve_title,
+        outline_proposal: outline_proposal,
+        outline_defense: outline_defense,
+        data_gather: data_gather,
+        manuscript: manuscript,
+        final_oral_prep: final_oral_prep,
+        routing: routing,
+        plagiarism: plagiarism,
+        approval: approval,
+        final_output: final_output,
+        advisorname:
+            "${advisor_data.first["firstName"]} ${advisor_data.first["lastName"]}");
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        behavior: SnackBarBehavior.floating,
+        dismissDirection: DismissDirection.endToStart,
+        backgroundColor: CtrlColors.red,
+        content: Padding(
+          padding: EdgeInsets.all(8.0),
+          child: Text(
+            "Download Succesfully",
+            style: TextStyle(color: Colors.white),
+          ),
+        )));
     }
   }
 
