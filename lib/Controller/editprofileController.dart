@@ -70,37 +70,35 @@ class EditProfilePod extends ChangeNotifier {
     final depart = await supabase
         .from("user_department")
         .select()
-        .eq("supabase_id", userID)
+        .eq("supabase_id", userID ?? "")
         .single();
-    if (depart != null) {
-      userDepartment.addAll(depart);
-      notifyListeners();
-      final courseName = await supabase
-          .from("courses")
-          .select()
-          .eq("id", userDepartment['course_id'])
-          .single();
-      if (courseName != null) {
-        course_department = "${courseName['courseDepartment']}";
-        notifyListeners();
-      }
-    }
+    userDepartment.addAll(depart);
+    notifyListeners();
+    final courseName = await supabase
+        .from("courses")
+        .select()
+        .eq("id", userDepartment['course_id'])
+        .single();
+    course_department = "${courseName['courseDepartment']}";
+    notifyListeners();
   }
 
   update() async {
     final department = await supabase
         .from("user_department")
         .select()
-        .eq("supabase_id", userID)
+        .eq("supabase_id", userID ?? "")
         .single();
     if (course.id != null) {
       await supabase
           .from("user_department")
-          .update({"course_id": course.id}).eq("supabase_id", userID);
+          .update({"course_id": course.id}).eq("supabase_id", userID ?? "");
     } else {
       userDepartment.addAll(department);
-      await supabase.from("user_department").update(
-          {"course_id": userDepartment['course_id']}).eq("supabase_id", userID);
+      await supabase
+          .from("user_department")
+          .update({"course_id": userDepartment['course_id']}).eq(
+              "supabase_id", userID ?? "");
     }
   }
 
@@ -125,10 +123,11 @@ class EditProfilePod extends ChangeNotifier {
             "firstName": firstname.text == "" ? firstName : firstname.text,
             "middleName": middlename.text == "" ? middleName : middlename.text,
             "lastName": lastname.text == "" ? lastName : lastname.text,
-            "mobileNumber": mobilenumber.text == "" ? mobileNumber : mobilenumber.text,
+            "mobileNumber":
+                mobilenumber.text == "" ? mobileNumber : mobilenumber.text,
             "birth": birthdate.text == "" ? birthDate : birthdate.text,
           })
-          .eq("supabase_id", prefs.getString("supabase_id"))
+          .eq("supabase_id", prefs.getString("supabase_id") ?? "")
           .then((value) {})
           .whenComplete(() {
             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

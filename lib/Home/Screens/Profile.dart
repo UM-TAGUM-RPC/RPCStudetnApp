@@ -28,9 +28,8 @@ class _ProfileState extends ConsumerState<Profile> {
     final controller = ref.watch(profilecontroller);
     final controller1 = ref.watch(homepagecontroller);
     return StreamBuilder<dynamic>(
-        stream: controller.supabase
-            .from("users")
-            .stream(primaryKey: ['id']).eq("supabase_id", controller.userID),
+        stream: controller.supabase.from("users").stream(primaryKey: ['id']).eq(
+            "supabase_id", controller.userID ?? ""),
         builder: (context, snapshot) {
           return Scaffold(
             backgroundColor: Colors.white,

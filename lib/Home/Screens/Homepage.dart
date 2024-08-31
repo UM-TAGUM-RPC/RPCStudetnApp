@@ -404,7 +404,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                             ),
                             SizedBox(
                               height: 40,
-                              width: 103,
+                              width: 123,
                               child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(

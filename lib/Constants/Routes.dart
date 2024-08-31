@@ -47,16 +47,19 @@ final routerKey = Provider<GoRouter>((ref) {
       final copy = ref.read(isDuplicate.notifier);
       final auth = ref.read(sessionAuth);
       final status = auth.statusAuth == StatusAuth.authenticated;
-      final signInP = state.subloc == "/login";
-      final signUnP = state.subloc == "/signup";
-      final homeP = state.subloc == "/homepage";
+      final signInP = state.matchedLocation == "/login";
+      final signUnP = state.matchedLocation == "/signup";
+      final homeP = state.matchedLocation == "/homepage";
 
       if (!status && signInP && supabaseids == null && supabaseids == "" ||
           supabaseids == null) {
         return "/login";
       }
 
-      if (!copy.state &&status &&(!homeP || homeP) &&supabaseids.isNotEmpty) {
+      if (!copy.state &&
+          status &&
+          (!homeP || homeP) &&
+          supabaseids.isNotEmpty) {
         copy.state = true;
         return "/homepage";
       }
