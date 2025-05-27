@@ -43,7 +43,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     return StreamBuilder<dynamic>(
         stream: controller.supabase
             .from("users")
-            .stream(primaryKey: ['id']).eq("supabase_id", controller.userID),
+            .stream(primaryKey: ['id']).eq("supabase_id", controller.userID?? ""),
         builder: (context, snapshot) {
           return Scaffold(
             backgroundColor: Colors.white,
@@ -392,7 +392,7 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                               },
                             ),
                           );
-                        }),
+                        }, stream: null,),
                         const SizedBox(
                           height: 20,
                         ),

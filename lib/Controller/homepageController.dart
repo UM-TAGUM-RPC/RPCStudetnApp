@@ -83,7 +83,7 @@ class HomePagePod extends ChangeNotifier {
     final advisor_data =
         await supabase.from("users").select().eq("supabase_id", advisor_id);
     final student_id =
-        await supabase.from("monitoring_sheet").select().eq("z_code", code);
+        await supabase.from("monitoring_sheet").select().eq("z_code", code ?? "");
 
     for (int x = 0;
         x < student_id.first["id_student"]["students_id"].length;
@@ -651,7 +651,7 @@ class HomePagePod extends ChangeNotifier {
                                         final name = await supabase
                                             .from("users")
                                             .select()
-                                            .eq("supabase_id", userID);
+                                            .eq("supabase_id", userID ?? "");
                                         if (name != "" || name != null) {
                                           approvalName =
                                               "${name.first["firstName"]} ${name.first["lastName"]}";
@@ -668,7 +668,7 @@ class HomePagePod extends ChangeNotifier {
                                         final monitor_data = await supabase
                                             .from("monitoring_sheet")
                                             .select()
-                                            .eq("z_code", code);
+                                            .eq("z_code", code ??"");
                                         if (monitor_data != "" ||
                                             monitor_data != null) {
                                           monitorID = monitor_data.first['id']
@@ -680,7 +680,7 @@ class HomePagePod extends ChangeNotifier {
                                             .update({
                                               "current": current,
                                             })
-                                            .eq("z_code", code)
+                                            .eq("z_code", code??"")
                                             .whenComplete(() async {
                                               log("update complete");
                                             });

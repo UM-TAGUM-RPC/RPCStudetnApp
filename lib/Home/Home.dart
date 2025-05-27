@@ -48,7 +48,7 @@ class _HomeState extends ConsumerState<Home> {
     return StreamBuilder<dynamic>(
         stream: controller.supabase
             .from("users")
-            .stream(primaryKey: ['id']).eq("supabase_id", controller.userID),
+            .stream(primaryKey: ['id']).eq("supabase_id", controller.userID ?? ""),
         builder: (context, snapshot) {
           return Scaffold(
               backgroundColor: Colors.white,
