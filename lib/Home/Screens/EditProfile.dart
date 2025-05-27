@@ -41,9 +41,8 @@ class _EditProfileState extends ConsumerState<EditProfile> {
     final controller = ref.watch(editprofilecontroller);
 
     return StreamBuilder<dynamic>(
-        stream: controller.supabase
-            .from("users")
-            .stream(primaryKey: ['id']).eq("supabase_id", controller.userID?? ""),
+        stream: controller.supabase.from("users").stream(primaryKey: ['id']).eq(
+            "supabase_id", controller.userID ?? ""),
         builder: (context, snapshot) {
           return Scaffold(
             backgroundColor: Colors.white,
@@ -255,104 +254,57 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                         const SizedBox(
                           height: 20,
                         ),
-                        StreamBuilder<dynamic>(builder: (context, snapshot) {
-                          return Container(
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              color: Color(0xFFF7F7F7),
-                            ),
-                            child: DropdownSearch<Course>(
-                              dropdownBuilder: (context, selectedItem) {
-                                return Text(
-                                  controller.course_department == null
-                                      ? "Search Department"
-                                      : selectedItem!.courseDepartment == null
-                                          ? controller.course_department
-                                              .toString()
-                                          : controller.course_department
-                                              .toString(),
-                                  style: TextStyle(
-                                      fontFamily: 'GeneralSansRegular',
-                                      fontSize: 13.sp,
-                                      color: CtrlColors.black),
-                                );
-                              },
-                              dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
-                                contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 12,
-                                  horizontal: 14,
+                        StreamBuilder<dynamic>(
+                            stream: null,
+                            builder: (context, snapshot) {
+                              return Container(
+                                decoration: const BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  color: Color(0xFFF7F7F7),
                                 ),
-                                hintText: "Search Course Department",
-                                hintStyle: TextStyle(
-                                  color: CtrlColors.black,
-                                  fontSize: 8.sp,
-                                  fontFamily: "GeneralSansRegular",
-                                ),
-                                fillColor: const Color(0xFFF7F7F7),
-                                prefixIcon: Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: SvgPicture.asset(
-                                    CtrlSvg.idbadge,
-                                    width: 16.w,
-                                  ),
-                                ),
-                                enabledBorder: const OutlineInputBorder(
-                                  borderSide:
-                                      BorderSide(color: Colors.transparent),
-                                ),
-                                border: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Colors.transparent,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: const BorderSide(
-                                    color: Colors.transparent,
-                                  ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                              )),
-                              selectedItem: controller.course,
-                              items: controller.listcourse,
-                              itemAsString: (item) => item.courseDepartment!,
-                              popupProps: PopupProps.dialog(
-                                showSearchBox: true,
-                                searchFieldProps: TextFieldProps(
-                                  style: TextStyle(
-                                    color: CtrlColors.black,
-                                    fontSize: 12.sp,
-                                    fontFamily: "GeneralSans",
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  decoration: InputDecoration(
+                                child: DropdownSearch<Course>(
+                                  dropdownBuilder: (context, selectedItem) {
+                                    return Text(
+                                      controller.course_department == null
+                                          ? "Search Department"
+                                          : selectedItem!.courseDepartment ==
+                                                  null
+                                              ? controller.course_department
+                                                  .toString()
+                                              : controller.course_department
+                                                  .toString(),
+                                      style: TextStyle(
+                                          fontFamily: 'GeneralSansRegular',
+                                          fontSize: 13.sp,
+                                          color: CtrlColors.black),
+                                    );
+                                  },
+                                  dropdownDecoratorProps:
+                                      DropDownDecoratorProps(
+                                          dropdownSearchDecoration:
+                                              InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
                                       vertical: 12,
                                       horizontal: 14,
                                     ),
-                                    hintText: "Course Deparment",
+                                    hintText: "Search Course Department",
                                     hintStyle: TextStyle(
                                       color: CtrlColors.black,
-                                      fontSize: 15.sp,
+                                      fontSize: 8.sp,
                                       fontFamily: "GeneralSansRegular",
-                                      fontWeight: FontWeight.w500,
                                     ),
-                                    filled: true,
                                     fillColor: const Color(0xFFF7F7F7),
                                     prefixIcon: Padding(
                                       padding: const EdgeInsets.all(16.0),
                                       child: SvgPicture.asset(
-                                        CtrlSvg.search,
-                                        width: 12.w,
+                                        CtrlSvg.idbadge,
+                                        width: 16.w,
                                       ),
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                        color: Colors.transparent,
-                                      ),
-                                      borderRadius: BorderRadius.circular(10),
+                                    enabledBorder: const OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.transparent),
                                     ),
                                     border: OutlineInputBorder(
                                       borderSide: const BorderSide(
@@ -366,33 +318,90 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                       ),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
-                                  ),
-                                ),
-                                itemBuilder: (context, item, isSelected) =>
-                                    Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Text(
-                                    item.courseDepartment!,
-                                    style: TextStyle(
-                                      fontSize: 15.sp,
-                                      color: CtrlColors.black,
+                                  )),
+                                  selectedItem: controller.course,
+                                  items: controller.listcourse,
+                                  itemAsString: (item) =>
+                                      item.courseDepartment!,
+                                  popupProps: PopupProps.dialog(
+                                    showSearchBox: true,
+                                    searchFieldProps: TextFieldProps(
+                                      style: TextStyle(
+                                        color: CtrlColors.black,
+                                        fontSize: 12.sp,
+                                        fontFamily: "GeneralSans",
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                          vertical: 12,
+                                          horizontal: 14,
+                                        ),
+                                        hintText: "Course Deparment",
+                                        hintStyle: TextStyle(
+                                          color: CtrlColors.black,
+                                          fontSize: 15.sp,
+                                          fontFamily: "GeneralSansRegular",
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        filled: true,
+                                        fillColor: const Color(0xFFF7F7F7),
+                                        prefixIcon: Padding(
+                                          padding: const EdgeInsets.all(16.0),
+                                          child: SvgPicture.asset(
+                                            CtrlSvg.search,
+                                            width: 12.w,
+                                          ),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                            color: Colors.transparent,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        border: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                            color: Colors.transparent,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                            color: Colors.transparent,
+                                          ),
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                      ),
+                                    ),
+                                    itemBuilder: (context, item, isSelected) =>
+                                        Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Text(
+                                        item.courseDepartment!,
+                                        style: TextStyle(
+                                          fontSize: 15.sp,
+                                          color: CtrlColors.black,
+                                        ),
+                                      ),
                                     ),
                                   ),
+                                  onChanged: (value) {
+                                    controller.selectedItem(value);
+                                  },
+                                  validator: (value) {
+                                    if (controller.course == Course()) {
+                                      return "Empty Course";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
                                 ),
-                              ),
-                              onChanged: (value) {
-                                controller.selectedItem(value);
-                              },
-                              validator: (value) {
-                                if (controller.course == Course()) {
-                                  return "Empty Course";
-                                } else {
-                                  return null;
-                                }
-                              },
-                            ),
-                          );
-                        }, stream: null,),
+                              );
+                            }),
                         const SizedBox(
                           height: 20,
                         ),

@@ -9,6 +9,7 @@ import 'package:rpcstudentapp/Constants/Routes.dart';
 import 'package:rpcstudentapp/Controller/auth_session.dart';
 import 'package:rpcstudentapp/Controller/firebasePushNotification.dart';
 import 'package:rpcstudentapp/Controller/sharedPref.dart';
+import 'package:rpcstudentapp/firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -32,7 +33,9 @@ Future<void> messagehandling(RemoteMessage? message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await SharedPrefs.init();
   await Supabase.initialize(
     url: "https://miojbztjrzdmwdyzhdoy.supabase.co",
@@ -47,7 +50,6 @@ void main() async {
   prefs.getString("supabase_id");
   FirebaseMessaging.onBackgroundMessage(messagehandling);
 }
-
 
 getID() async {
   final prefs = await SharedPreferences.getInstance();

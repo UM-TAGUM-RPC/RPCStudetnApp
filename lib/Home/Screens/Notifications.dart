@@ -34,7 +34,7 @@ class NotifScreen extends ConsumerWidget {
                   InkWell(
                     onTap: () async {
                       await controller.supabase.from("notifications").update(
-                          {"status": "read"}).eq("to_id", controller.id?? "");
+                          {"status": "read"}).eq("to_id", controller.id ?? "");
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,

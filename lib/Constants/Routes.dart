@@ -56,7 +56,10 @@ final routerKey = Provider<GoRouter>((ref) {
         return "/login";
       } 
 
-      if (!copy.state &&status &&(!homeP || homeP) &&supabaseids.isNotEmpty) {
+      if (!copy.state &&
+          status &&
+          (!homeP || homeP) &&
+          supabaseids.isNotEmpty) {
         copy.state = true;
         return "/homepage";
       }

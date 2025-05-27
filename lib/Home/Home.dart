@@ -46,9 +46,8 @@ class _HomeState extends ConsumerState<Home> {
     final controller = ref.watch(homepagecontroller);
 
     return StreamBuilder<dynamic>(
-        stream: controller.supabase
-            .from("users")
-            .stream(primaryKey: ['id']).eq("supabase_id", controller.userID ?? ""),
+        stream: controller.supabase.from("users").stream(primaryKey: ['id']).eq(
+            "supabase_id", controller.userID ?? ""),
         builder: (context, snapshot) {
           return Scaffold(
               backgroundColor: Colors.white,
@@ -77,49 +76,53 @@ class _HomeState extends ConsumerState<Home> {
                               )),
                         ),
                         10.horizontalSpace,
-                        Padding(
-                          padding: const EdgeInsets.only(top: 25),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            // ignore: prefer_const_literals_to_create_immutables
-                            children: [
-                              Row(
-                                // ignore: prefer_const_literals_to_create_immutables
-                                children: [
-                                  Text(
-                                    "W",
-                                    style: TextStyle(
-                                        fontFamily: 'GeneralSans',
-                                        fontSize: 38.sp,
-                                        color: CtrlColors.red),
-                                  ),
-                                  Text(
-                                    "elcome!",
-                                    style: TextStyle(
-                                        fontFamily: 'GeneralSans',
-                                        fontSize: 38.sp,
-                                        color: CtrlColors.black),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 30,
-                                width: 150,
-                                child: ListView.builder(
-                                    scrollDirection: Axis.horizontal,
-                                    itemCount: snapshot.data?.length ?? 0,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, ind) {
-                                      return Text(
-                                        "${snapshot.data[ind]['firstName']}, ${snapshot.data[ind]['lastName']}",
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 25),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              // ignore: prefer_const_literals_to_create_immutables
+                              children: [
+                                Row(
+                                  // ignore: prefer_const_literals_to_create_immutables
+                                  children: [
+                                    Text(
+                                      "W",
+                                      style: TextStyle(
+                                          fontFamily: 'GeneralSans',
+                                          fontSize: 26.sp,
+                                          color: CtrlColors.red),
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        "elcome!",
                                         style: TextStyle(
-                                            fontFamily: 'GeneralSansRegular',
-                                            fontSize: 15.sp,
+                                            fontFamily: 'GeneralSans',
+                                            fontSize: 26.sp,
                                             color: CtrlColors.black),
-                                      );
-                                    }),
-                              )
-                            ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                  width: 150,
+                                  child: ListView.builder(
+                                      scrollDirection: Axis.horizontal,
+                                      itemCount: snapshot.data?.length ?? 0,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, ind) {
+                                        return Text(
+                                          "${snapshot.data[ind]['firstName']}, ${snapshot.data[ind]['lastName']}",
+                                          style: TextStyle(
+                                              fontFamily: 'GeneralSansRegular',
+                                              fontSize: 15.sp,
+                                              color: CtrlColors.black),
+                                        );
+                                      }),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                         50.horizontalSpace,
