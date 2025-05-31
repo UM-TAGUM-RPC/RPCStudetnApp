@@ -79,11 +79,11 @@ class HomePagePod extends ChangeNotifier {
     var statusGrant = await Permission.storage.status;
 
     if (await Permission.storage.request().isGranted) {
-    List<String> names = <String>[];
-    final advisor_data =
-        await supabase.from("users").select().eq("supabase_id", advisor_id);
-    final student_id =
-        await supabase.from("monitoring_sheet").select().eq("z_code", code!);
+      List<String> names = <String>[];
+      final advisor_data =
+          await supabase.from("users").select().eq("supabase_id", advisor_id);
+      final student_id =
+          await supabase.from("monitoring_sheet").select().eq("z_code", code!);
 
       for (int x = 0;
           x < student_id.first["id_student"]["students_id"].length;
@@ -438,22 +438,25 @@ class HomePagePod extends ChangeNotifier {
   }
 
   static sendMessageTo({String? fcmToken, String? title, String? body}) async {
-    try {
-      await dio.post("https://fcm.googleapis.com/fcm/send",
-          data: {
-            "to": fcmToken,
-            "notification": {
-              "body": body ?? "",
-              "title": title ?? "Notification",
-            }
-          },
-          options: d.Options(headers: {
-            "Content-Type": "application/json",
-            "Authorization":
-                "key=AAAAmL5EGcU:APA91bGc1TGqnfWaqmKxqqSKMK6n_l10DhR8NYDTIQbf2WomewxehaeG1WOeS87J-yA58Rs0D0l4vv4Dk4O4LKAoEUnaLI0HWMkqaXml5IVVVner-XJT__y8Kg2pfiGs_9TelrZwGcDK",
-          }));
-    } on d.DioException catch (e) {
-      log(e.response!.data.toString(), name: "Notification Error");
+    if (fcmToken != null && fcmToken != "") {
+      try {
+        await dio.post("https://fcm.googleapis.com/fcm/send",
+            data: {
+              "to": fcmToken,
+              "notification": {
+                "body": body ?? "",
+                "title": title ?? "Notification",
+              }
+            },
+            options: d.Options(headers: {
+              "Content-Type": "application/json",
+              "Authorization":
+                  "key=AAAAmL5EGcU:APA91bGc1TGqnfWaqmKxqqSKMK6n_l10DhR8NYDTIQbf2WomewxehaeG1WOeS87J-yA58Rs0D0l4vv4Dk4O4LKAoEUnaLI0HWMkqaXml5IVVVner-XJT__y8Kg2pfiGs_9TelrZwGcDK",
+            }));
+      } on d.DioException catch (e) {
+        log("${e.response!.data.toString()} $fcmToken",
+            name: "Notification Error");
+      }
     }
   }
 
@@ -569,10 +572,12 @@ class HomePagePod extends ChangeNotifier {
                                           .from("notification_token_device")
                                           .select()
                                           .eq("supabase_id", advisor_id);
-                                      if (advisor_token != null ||
+                                      if (advisor_token.isNotEmpty ||
                                           advisor_token != "") {
-                                        token =
-                                            advisor_token.first["token_device"];
+                                        token = advisor_token.isEmpty
+                                            ? ""
+                                            : advisor_token
+                                                .first["token_device"];
                                         if (approve_title == true &&
                                             outline_proposal == true &&
                                             outline_defense == true &&

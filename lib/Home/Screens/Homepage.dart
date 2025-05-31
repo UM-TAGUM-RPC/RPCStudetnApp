@@ -24,20 +24,20 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
+  // late Permission permission;
   @override
   void initState() {
     ref.read(homepagecontroller.notifier).getUser();
     ref.read(homepagecontroller.notifier).getCode();
-    requestPermission();
+    // requestPermission();
     super.initState();
-    requestPermission();
+    // requestPermission();
     tz.initializeTimeZones();
   }
 
-  Future<void> requestPermission() async {
-    Permission? permission;
-    await permission!.request();
-  }
+  // Future<void> requestPermission() async {
+  //   await permission.request();
+  // }
 
   @override
   Widget build(

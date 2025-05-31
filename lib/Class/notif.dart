@@ -53,9 +53,10 @@ class NotificationServices {
           presentSound: true,
         ),
       ),
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
-      androidAllowWhileIdle: true,
+      // uiLocalNotificationDateInterpretation:
+      //     UILocalNotificationDateInterpretation.absoluteTime,
+      // androidAllowWhileIdle: true,
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
     );
   }
 

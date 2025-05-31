@@ -1,0 +1,2 @@
+/Volumes/Erchil-SSD/flutter-projects/RPCStudetnApp/android/app/.cxx/Debug/2v6jj4wc/x86/CMakeFiles/edit_cache.dir
+/Volumes/Erchil-SSD/flutter-projects/RPCStudetnApp/android/app/.cxx/Debug/2v6jj4wc/x86/CMakeFiles/rebuild_cache.dir

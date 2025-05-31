@@ -439,8 +439,8 @@ class _SignupState extends ConsumerState<Signup> {
                                       color: CtrlColors.black),
                                 );
                               },
-                              dropdownDecoratorProps: DropDownDecoratorProps(
-                                  dropdownSearchDecoration: InputDecoration(
+                              decoratorProps: DropDownDecoratorProps(
+                                  decoration: InputDecoration(
                                 contentPadding: const EdgeInsets.symmetric(
                                   vertical: 12,
                                   horizontal: 14,
@@ -477,7 +477,8 @@ class _SignupState extends ConsumerState<Signup> {
                                 ),
                               )),
                               selectedItem: controller.course,
-                              items: controller.listcourse,
+                              items: (filter, loadProps) =>
+                                  controller.listcourse,
                               itemAsString: (item) => item.courseDepartment!,
                               popupProps: PopupProps.dialog(
                                 showSearchBox: true,
@@ -529,7 +530,7 @@ class _SignupState extends ConsumerState<Signup> {
                                     ),
                                   ),
                                 ),
-                                itemBuilder: (context, item, isSelected) =>
+                                itemBuilder: (context, item, c, isSelected) =>
                                     Padding(
                                   padding: const EdgeInsets.all(15.0),
                                   child: Text(

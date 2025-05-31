@@ -280,10 +280,8 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                           color: CtrlColors.black),
                                     );
                                   },
-                                  dropdownDecoratorProps:
-                                      DropDownDecoratorProps(
-                                          dropdownSearchDecoration:
-                                              InputDecoration(
+                                  decoratorProps: DropDownDecoratorProps(
+                                      decoration: InputDecoration(
                                     contentPadding: const EdgeInsets.symmetric(
                                       vertical: 12,
                                       horizontal: 14,
@@ -320,7 +318,8 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                     ),
                                   )),
                                   selectedItem: controller.course,
-                                  items: controller.listcourse,
+                                  items: (filter, loadProps) =>
+                                      controller.listcourse,
                                   itemAsString: (item) =>
                                       item.courseDepartment!,
                                   popupProps: PopupProps.dialog(
@@ -377,11 +376,12 @@ class _EditProfileState extends ConsumerState<EditProfile> {
                                         ),
                                       ),
                                     ),
-                                    itemBuilder: (context, item, isSelected) =>
-                                        Padding(
+                                    itemBuilder:
+                                        (context, c, item, isSelected) =>
+                                            Padding(
                                       padding: const EdgeInsets.all(15.0),
                                       child: Text(
-                                        item.courseDepartment!,
+                                        c.courseDepartment ?? "",
                                         style: TextStyle(
                                           fontSize: 15.sp,
                                           color: CtrlColors.black,
