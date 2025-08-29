@@ -1,8 +1,5 @@
-import 'dart:developer';
-import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
@@ -91,7 +88,7 @@ class SignUpPod extends ChangeNotifier {
             });
         return;
       }
-    } on PostgrestException catch (e) {
+    } on PostgrestException {
       showDialog(
           barrierDismissible: false,
           context: context,
@@ -158,7 +155,7 @@ class SignUpPod extends ChangeNotifier {
         }
       }
       return;
-    } on AuthException catch (e) {
+    } on AuthException {
       if (!isloading) return;
       Navigator.of(context).pop();
     }

@@ -6,15 +6,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:readmore/readmore.dart';
-import 'package:rpcstudentapp/Class/notif.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
-import 'package:rpcstudentapp/Constants/generateSheet.dart';
-import 'package:rpcstudentapp/Controller/editprofileController.dart';
 import 'package:rpcstudentapp/Controller/homepageController.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:timezone/timezone.dart' as tz;
 import 'package:timezone/data/latest.dart' as tz;
 
 class HomePage extends ConsumerStatefulWidget {

@@ -1,8 +1,9 @@
+import 'dart:developer';
 import 'dart:io';
 
 // import 'package:cr_file_saver/file_saver.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -14,12 +15,20 @@ class GenerateSheet {
     String? name,
     pw.Document? document,
   }) async {
-    final dir = "/storage/emulated/0/Download";
-    final file = File("${dir}/$name");
+    final dir = await getTemporaryDirectory();
+    final file = File("${dir.path}/$name");
     await file.create(recursive: true);
     final bytes = await document!.save();
     await file.writeAsBytes(bytes);
+    log(file.path);
+    await FileSaver.instance.saveAs(
+  name: "$name",
+  bytes: bytes,
+  ext: "pdf",
+  mimeType: MimeType.pdf,
+);
     return file;
+      
   }
 
   static Future<File> generateSheettoPdf({
@@ -66,6 +75,7 @@ class GenerateSheet {
         ],
       ),
     );
+    
     return saveDocumentPdf(name: name, document: pdf);
   }
 

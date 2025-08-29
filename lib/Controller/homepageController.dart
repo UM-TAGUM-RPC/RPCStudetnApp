@@ -2,18 +2,12 @@
 
 import 'dart:developer';
 
-import 'package:dio/dio.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:rpcstudentapp/Constants/Routes.dart';
-import 'package:rpcstudentapp/Widgets/dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:dio/dio.dart' as d;
@@ -76,9 +70,8 @@ class HomePagePod extends ChangeNotifier {
       plagiarism,
       approval,
       final_output}) async {
-    var statusGrant = await Permission.storage.status;
-
-    if (await Permission.storage.request().isGranted) {
+   
+      log("access fuck feast");
       List<String> names = <String>[];
       final advisor_data =
           await supabase.from("users").select().eq("supabase_id", advisor_id);
@@ -122,7 +115,7 @@ class HomePagePod extends ChangeNotifier {
               style: TextStyle(color: Colors.white),
             ),
           )));
-    }
+    
   }
 
   // ignore: body_might_complete_normally_nullable

@@ -4,11 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
-import 'package:rpcstudentapp/Controller/auth_session.dart';
 import 'package:rpcstudentapp/Controller/homepageController.dart';
 import 'package:rpcstudentapp/Controller/profile.dart';
-import 'package:rpcstudentapp/Widgets/dialog.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends ConsumerStatefulWidget {
   const Profile({super.key});

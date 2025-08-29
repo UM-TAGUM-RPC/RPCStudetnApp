@@ -5,8 +5,8 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:rpcstudentapp/Constants/Constants.dart';
-import 'package:rpcstudentapp/Constants/Routes.dart';
 import 'package:rpcstudentapp/Controller/auth_session.dart';
 import 'package:rpcstudentapp/Controller/homepageController.dart';
 import 'package:rpcstudentapp/Widgets/BottomBarIndicator.dart';
@@ -31,6 +31,7 @@ class _HomeState extends ConsumerState<Home> {
       new FlutterLocalNotificationsPlugin();
   @override
   void initState() {
+     requestStorage();
     ref.read(homepagecontroller.notifier).getUser();
     // var initializationSettingsAndroid =new AndroidInitializationSettings('app_icon');
     // var initializationSettingsIOS = new IOSInitializationSettings();
@@ -38,6 +39,12 @@ class _HomeState extends ConsumerState<Home> {
     // flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
     // flutterLocalNotificationsPlugin.initialize(initializationSettings,selectNotification: onSelectNotification);
     super.initState();
+  }
+
+  void requestStorage() async{
+    await Permission.storage.request();
+    await Permission.manageExternalStorage.request();
+    await Permission.photos.request();
   }
 
   @override
